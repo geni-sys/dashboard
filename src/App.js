@@ -1,12 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header"></header>
-    </div>
-  );
-}
+// "STYLES"
+import "./global.css";
+
+// "COMPONENTS"
+import Header from "./components/Header";
+import Main from "./components/Main";
+
+const App = () => (
+  <div className="App">
+    <Header />
+    <Main />
+  </div>
+);
 
 export default App;
