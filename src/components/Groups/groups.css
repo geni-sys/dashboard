@@ -1,0 +1,70 @@
+li.dev-item-t div.time-info {
+  display: flex;
+  flex-wrap: wrap;
+}
+li.dev-item div#footer-u,
+li.dev-item-t div#footer-u {
+  position: relative;
+  bottom: 0;
+  background-color: #f24;
+  height: 10px;
+  width: 100%;
+}
+
+li.dev-item-t {
+  background: #fff;
+  background-color: #fff;
+  box-shadow: 0 0.3px 18px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  height: 90px;
+}
+li.dev-item-t:hover {
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+div.time-info div {
+  margin-bottom: 15px;
+}
+div.time-info div p {
+  color: #333;
+  padding: 5px;
+  margin-left: 10px;
+}
+div.time-info div p::after {
+  content: "|";
+  color: #709c;
+  padding: 5px;
+}
+div.time-info div label {
+  color: #444;
+  padding-left: 20px;
+}
+
+div.usr-info div {
+  padding: 5px;
+  margin: 5px 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+div.usr-info div#first:hover {
+  border-bottom: 1px solid #7159c1;
+  cursor: pointer;
+}
+
+div div#header img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+div div#boody {
+  margin-left: 10px;
+  display: block;
+}
+div div#boody strong {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Roboto mono", Arial, Helvetica, sans-serif;
+}
