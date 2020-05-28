@@ -1,5 +1,8 @@
 div#Container {
   margin-top: 63px;
+  position: relative;
+  /* left: 100px; */
+  width: 700px;
 }
 
 #Container {
@@ -40,12 +43,12 @@ li.dev-item {
   background-color: #fff;
   box-shadow: 0 0.3px 18px 0 rgba(0, 0, 0, 0.2);
   border-radius: 3px;
+  height: auto;
   /* padding: 20px; */
 }
 
 li.dev-item:hover {
   box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
 }
 
 li.dev-item header {
@@ -59,12 +62,6 @@ li.dev-item header strong {
   display: block;
   font-size: 16px;
   color: #111;
-}
-
-li.dev-item img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
 }
 
 li.dev-item .user-info {
@@ -96,6 +93,8 @@ li.dev-item .user-info {
 @media (max-width: 1000px) {
   div#Container {
     flex-direction: column;
+    left: 0;
+    width: 100%;
   }
 
   div#Container main {

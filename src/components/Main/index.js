@@ -1,5 +1,7 @@
 import React, { useState, memo } from 'react'
 
+import { AlterData, Aulas, Desafios, UsersInfo } from '../Groups'
+
 import Aside from '../Aside'
 
 import './styles.css'
@@ -8,7 +10,7 @@ const Dashboard = () => (
   <>
     <li className="dev-item">
       <header>
-        <strong>Aulas criadas</strong>
+        <strong>Aulas</strong>
       </header>
       <div className="user-info">
         <div>
@@ -29,19 +31,19 @@ const Dashboard = () => (
 
     <li className="dev-item">
       <header>
-        <strong>Aulas criadas</strong>
+        <strong>Notas de feedback</strong>
       </header>
       <div className="user-info">
         <div>
-          <p>Criadas</p>
+          <p>0 á 5</p>
           <label htmlFor="">1234</label>
         </div>
         <div>
-          <p>Destaques</p>
+          <p>6 á 8</p>
           <label htmlFor="">42343</label>
         </div>
         <div>
-          <p>In Coming</p>
+          <p>9 á 10</p>
           <label htmlFor="">2343</label>
         </div>
       </div>
@@ -92,40 +94,8 @@ const Dashboard = () => (
   </>
 );
 
-const UsersInfo = () => (
-  <>
-    <div id="user-group">
-      <h3>Hello User</h3>
-    </div>
-  </>
-)
-
-const AlterData = () => (
-  <>
-    <div id="change-group">
-      <h3>Hello User</h3>
-    </div>
-  </>
-)
-
-const Aulas = () => (
-  <>
-    <div id="aulas-group">
-      <h3>Hello User</h3>
-    </div>
-  </>
-)
-
-const Desafios = () => (
-  <>
-    <div id="quiz-group">
-      <h3>Hello User</h3>
-    </div>
-  </>
-)
-
 const Main = () => {
-  const [activedGroup, setActivedGroup] = useState(1);
+  const [activedGroup, setActivedGroup] = useState(2);
 
   function determinateWhoActive(id) {
     if (id === 1)

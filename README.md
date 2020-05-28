@@ -1,3 +1,3 @@
-# DASHBOARD 
+# DASHBOARD
 
 > panel of genisys
