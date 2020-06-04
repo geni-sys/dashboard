@@ -1,0 +1,64 @@
+aside {
+  z-index: 5;
+  position: fixed;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+
+  background-color: #fff;
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 30px 20px;
+}
+
+aside div#aside-group {
+  margin-top: 10px;
+}
+
+aside div#aside-group strong {
+  font-size: 15px;
+  color: #333;
+}
+
+div#aside-group ul li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 3px;
+
+  cursor: pointer;
+  margin: 8px 0;
+  padding: 3px;
+}
+div#aside-group ul li:hover {
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+ul li button {
+  color: #888686;
+  background-color: inherit;
+  cursor: pointer;
+  border: 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  display: block;
+  padding-left: 10px;
+  font-family: "Roboto mono", sans-serif;
+}
+
+div#aside-group ul#nav-group {
+  padding: 20px 20px;
+}
+
+li.isActived {
+  background-color: #444464;
+  color: #d6acff;
+  height: auto;
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.3);
+}
+
+li.isActived button {
+  color: #fff;
+}

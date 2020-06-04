@@ -74,7 +74,7 @@ export const UsersInfo = () => (
 export const AlterData = () => (
   <>
     <div id="change-group">
-      <h3>Hello User</h3>
+      <h3>Alterar Dados</h3>
     </div>
   </>
 )
@@ -82,7 +82,7 @@ export const AlterData = () => (
 export const Aulas = () => (
   <>
     <div id="aulas-group">
-      <h3>Hello User</h3>
+      <h3>Editar Aulas</h3>
     </div>
   </>
 )
@@ -90,7 +90,95 @@ export const Aulas = () => (
 export const Desafios = () => (
   <>
     <div id="quiz-group">
-      <h3>Hello User</h3>
+      <h3>Marcar Desafios</h3>
     </div>
   </>
 )
+
+export const Dashboard = () => (
+  <>
+    <li className="dev-item">
+      <header>
+        <strong>Aulas</strong>
+      </header>
+      <div className="user-info">
+        <div>
+          <p>Criadas</p>
+          <label htmlFor="">1234</label>
+        </div>
+        <div>
+          <p>Destaques</p>
+          <label htmlFor="">42343</label>
+        </div>
+        <div>
+          <p>In Coming</p>
+          <label htmlFor="">2343</label>
+        </div>
+      </div>
+      <div id="footer"></div>
+    </li>
+
+    <li className="dev-item">
+      <header>
+        <strong>Notas de feedback</strong>
+      </header>
+      <div className="user-info">
+        <div>
+          <p>0 á 5</p>
+          <label htmlFor="">1234</label>
+        </div>
+        <div>
+          <p>6 á 8</p>
+          <label htmlFor="">42343</label>
+        </div>
+        <div>
+          <p>9 á 10</p>
+          <label htmlFor="">2343</label>
+        </div>
+      </div>
+      <div id="footer"></div>
+    </li>
+
+    <li className="dev-item">
+      <header>
+        <strong>Aulas criadas</strong>
+      </header>
+      <div className="user-info">
+        <div>
+          <p>Criadas</p>
+          <label htmlFor="">1234</label>
+        </div>
+        <div>
+          <p>Destaques</p>
+          <label htmlFor="">42343</label>
+        </div>
+        <div>
+          <p>In Coming</p>
+          <label htmlFor="">2343</label>
+        </div>
+      </div>
+      <div id="footer"></div>
+    </li>
+
+    <li className="dev-item">
+      <header>
+        <strong>Aulas criadas</strong>
+      </header>
+      <div className="user-info">
+        <div>
+          <p>Criadas</p>
+          <label htmlFor="">1234</label>
+        </div>
+        <div>
+          <p>Destaques</p>
+          <label htmlFor="">42343</label>
+        </div>
+        <div>
+          <p>In Coming</p>
+          <label htmlFor="">2343</label>
+        </div>
+      </div>
+      <div id="footer"></div>
+    </li>
+  </>
+);

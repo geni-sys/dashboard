@@ -1,0 +1,109 @@
+div#Container {
+  margin-top: 63px;
+  position: relative;
+  /* left: 100px; */
+  width: 700px;
+}
+
+#Container {
+  max-width: 100%;
+  margin: 0 auto;
+  /* padding: 20px 10px; */
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+main {
+  flex: 1;
+  margin-left: 20px;
+  max-width: 900px !important;
+}
+
+main ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 800px; /* for this */
+  margin-top: 30px;
+  margin-left: 20px;
+}
+
+@media (max-width: 650px) {
+  main ul {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin: 0;
+  }
+}
+
+li.dev-item {
+  background: #fff;
+  background-color: #fff;
+  box-shadow: 0 0.3px 18px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  height: auto;
+  /* padding: 20px; */
+}
+
+li.dev-item:hover {
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+li.dev-item header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+li.dev-item header strong {
+  display: block;
+  font-size: 16px;
+  color: #111;
+}
+
+li.dev-item .user-info {
+  display: flex;
+  margin-left: 30px;
+  padding: 10px;
+}
+
+.user-info div p {
+  display: block;
+  font-size: 14px;
+  color: #222;
+  margin: 5px;
+  text-decoration: dashed;
+}
+.user-info div label {
+  font-size: 17px;
+  color: #999;
+  margin-top: 3px;
+  margin: 7px;
+}
+
+.dev-item div#footer {
+  height: 10px;
+  width: 100%;
+  background-color: #8e4dff;
+}
+
+@media (max-width: 1000px) {
+  div#Container {
+    flex-direction: column;
+    left: 0;
+    width: 100%;
+  }
+
+  div#Container main {
+    margin-left: 0;
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  div#Container aside {
+    display: none;
+  }
+}
