@@ -15,7 +15,7 @@ import './Aside.css'
 import { AlterData, Aulas, Desafios, UsersInfo, Dashboard } from '../../components/Groups'
 
 const Home = () => {
-  const [activedGroup, setActivedGroup] = useState(2);
+  const [activedGroup, setActivedGroup] = useState(5);
 
   function determinateWhoActive(id) {
     if (id === 1)

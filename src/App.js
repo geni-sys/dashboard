@@ -1,8 +1,5 @@
 import React from "react";
 
-// "STYLES"
-import "./global.css";
-
 // "COMPONENTS"
 import Header from "./components/Header";
 import Home from "./pages/Home";
