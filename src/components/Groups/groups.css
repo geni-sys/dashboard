@@ -149,15 +149,18 @@ textarea {
   font-size: 18px;
   padding: 5px;
   margin-left: 20px;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 div#content-group div#body textarea {
   width: 800px;
   height: 280px;
+  font-family: "Roboto", Arial, sans-serif;
 }
 div#content-group div#tips textarea {
   width: 700px;
   height: 150px;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 div#content-group div#body {

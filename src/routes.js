@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, BrowserRouter } from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie'
 
 // "STYLES"
 import "./global.css";
@@ -11,8 +12,10 @@ import Login from './pages/Login'
 
 const Routes = () => (
   <BrowserRouter>
-    <Route component={Login} path="/" exact />
-    <Route component={App} path="/home" exact />
+    <CookiesProvider>
+      <Route component={Login} path="/" exact />
+      <Route component={App} path="/home" exact />
+    </CookiesProvider>
   </BrowserRouter>
 )
 
