@@ -8,7 +8,7 @@ import './styles.css';
 function AulaControle({ id, disactiveControle }) {
   const [title, setTitle] = useState('')
   const [tags, setTags] = useState('')
-  const [body, setBody] = useState('')
+  const [body, setBody] = useState(``)
   const [link, setLink] = useState('')
 
   const [cookies] = useCookies()
@@ -56,7 +56,32 @@ function AulaControle({ id, disactiveControle }) {
       return alert(err.message)
     }
   }
-  async function handleSave() { }
+  async function handleSave() {
+    try {
+
+      const response = api.put(`/admin/${user_id}/edit/issue/${id}`,
+        {
+          tags,
+          body: `${body}`,
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${String(token)}`
+          }
+        }
+      ).catch(error => alert(error.message))
+
+      if (response) {
+        alert("ISSUE EDITADA!")
+        disactiveControle()
+        return history.push('/home?tab=4')
+      } else {
+        return alert('ERRO EDITANDO a issue')
+      }
+    } catch (err) {
+      return alert(err.message)
+    }
+  }
 
   useEffect(() => {
     handleRequest()
@@ -76,25 +101,35 @@ function AulaControle({ id, disactiveControle }) {
               <a
                 target="_BLANK"
                 rel=""
-                href="localhost:3332/users/ceo@gmail.com">
+                href={`http://localhost:3332/users/ceo@gmail.com`}>
                 {link}
               </a>
             </div>
             <div>
               <strong>Tags: </strong>
-              <span>{tags}</span>
+              <input type="text"
+                onChange={(e) => setTags(e.target.value)}
+                value={tags}
+                required />
             </div>
           </div>
           <div id="edit-aula-body">
             <strong>Corpo: </strong>
-            <div id="transcription">{body} </div>
+            <div id="transcription">
+              <textarea onChange={(e) => { console.log(body); setBody(String(e.target.value)) }}
+                value={String(body)}
+                name="area"
+                id="are"
+                required>
+              </textarea>
+            </div>
           </div>
           <div id="edit-aula-info">
             <span>Stars: 24343</span>
             <span>Users: 234</span>
           </div>
           <div id="comtroller">
-            <button className="green">Salvar</button>
+            <button type="submit" onClick={handleSave} className="green">Salvar</button>
             <button onClick={handleDelete} className="red">Excluir</button>
           </div>
         </li>
