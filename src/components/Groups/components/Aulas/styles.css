@@ -1,0 +1,70 @@
+div#aula-controler {
+  position: relative;
+  display: flex;
+}
+
+div#aula-controler ul#edit-father {
+  position: relative;
+}
+div#aula-controler ul li#edit-all {
+  box-shadow: 0 0.1px 0 1px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 30px;
+}
+div#aula-controler ul li#edit-all:hover {
+  box-shadow: 0 0.1px 0 2px rgba(0, 0, 0, 0.1);
+}
+ul li#edit-all div#top {
+  display: flex;
+}
+ul li#edit-all div#top strong {
+  padding: 0 30px 0 0;
+}
+
+ul li#edit-all div#edit-aula-user {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+div#edit-aula-user div strong {
+  padding: 0 30px 0 0;
+}
+
+ul li#edit-all div#edit-aula-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 2px;
+}
+
+ul li#edit-all div#edit-aula-body {
+  position: relative;
+  padding: 10px 0;
+  max-width: 100%;
+  max-height: 400px;
+}
+
+ul li#edit-all div#comtroller {
+  display: flex;
+  padding: 10px 0;
+}
+ul li#edit-all div#comtroller button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1px;
+  margin-right: 20px;
+  transition: background 0.2s;
+  transition: color 0.1s;
+  width: 80px;
+}
+li#edit-all div#comtroller button.red:hover {
+  background-color: #f25;
+  color: #f8f8fa;
+}
+li#edit-all div#comtroller button.green:hover {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #010101;
+}

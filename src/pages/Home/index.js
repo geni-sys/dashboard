@@ -14,24 +14,37 @@ import './Aside.css'
 // "COMPONENTS"
 import { AlterData, Aulas, Desafios, UsersInfo, Dashboard } from '../../components/Groups'
 
-const Home = () => {
-  const [activedGroup, setActivedGroup] = useState(5);
+const Home = ({ configs }) => {
+  const [activedGroup, setActivedGroup] = useState(() => {
+    const params = new URLSearchParams(configs.location.search)
+    const tab = parseInt(params.get('tab'))
+    return tab || 0
+  });
+
 
   function determinateWhoActive(id) {
-    if (id === 1)
+    if (activedGroup === 1) {
       return <Dashboard />
+    }
 
-    if (id === 2)
+    if (activedGroup === 2) {
       return <UsersInfo />
+    }
 
-    if (id === 3)
+    if (activedGroup === 3) {
       return <AlterData />
+    }
 
-    if (id === 4)
+    if (activedGroup === 4) {
       return <Aulas />
+    }
 
-    if (id === 5)
+    if (activedGroup === 5) {
       return <Desafios />
+    }
+
+    setActivedGroup(1)
+    return <Dashboard />
   }
 
   return (

@@ -4,10 +4,10 @@ import React from "react";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 
-const App = () => (
+const App = (props) => (
   <div className="App">
     <Header />
-    <Home />
+    <Home configs={props} />
   </div>
 );
 

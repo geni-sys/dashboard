@@ -74,6 +74,10 @@ div#menu-bar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  min-width: 600px;
+}
+div#menu-hide {
+  display: none;
 }
 
 input#search {
@@ -89,6 +93,10 @@ input#search {
 }
 
 /* AULAS EDITION */
+
+table#table-actived {
+  display: none;
+}
 
 table {
   font-family: arial, sans-serif;

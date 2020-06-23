@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useCookies } from 'react-cookie'
 import { FiEdit2 } from 'react-icons/fi'
 import api from '../../services/api'
-
+// COMPONENTS SIBLING
+import AulasController from './components/Aulas'
+// TYLUS
 import './groups.css'
 
 const Image = "https://avatars0.githubusercontent.com/u/35645590?s=460&u=2b86fc193b30e15abe3ad4df935ee7b7edf4cbd4&v=4"
@@ -83,24 +86,37 @@ export const AlterData = () => (
 
 export const Aulas = () => {
   const [data, setData] = useState([])
+  const [clicked, setClicked] = useState(null)
+  const [isActive, setIsActive] = useState(true)
+  const [modalIsActive, setModalIsActive] = useState(false)
+
+  const [cookies] = useCookies()
 
   useEffect(() => {
     handleData()
   }, [])
 
   async function handleData() {
-    const response = await api.get('/user/13/issues', {
+    const { token } = cookies
+    const response = await api.get(`/issues`, {
       headers: {
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTU5MTQyODExMiwiZXhwIjoxNTk0MDIwMTEyfQ.Qqc2tlBcHyRhpgjoWFyS8RsKyfcgbGNjRD343FzKheY"
+        "Authorization": `Bearer ${String(token)}`
       }
     })
 
-    setData(response.data.issues)
+    setData(response.data)
+  }
+  function handleChangeControle() {
+    setIsActive(!isActive)
+    setModalIsActive(!modalIsActive)
+  }
+  function handleEdit(id) {
+    return <AulasController id={id} disactiveControle={handleChangeControle} />
   }
 
   return (<>
     <div id="aulas-group">
-      <div id="menu-bar">
+      <div id={isActive ? 'menu-bar' : 'menu-hide'}>
         <h3>Editar Aulas</h3>
 
         <div id="search-aula">
@@ -109,10 +125,11 @@ export const Aulas = () => {
       </div>
 
       <div id="aulas-group">
-        <table>
+        <table id={isActive ? '' : 'table-actived'}>
           <tr>
             <th>Título</th>
-            <th>Language</th>
+            <th>Idioma</th>
+            <th>Criador</th>
             <th>Controle</th>
           </tr>
 
@@ -125,13 +142,20 @@ export const Aulas = () => {
                 <p>{item.language}</p>
               </td>
               <td>
-                <button id="edition">
+                <p>{item.user.name}</p>
+              </td>
+              <td>
+                <button onClick={() => {
+                  setClicked(item.id)
+                  handleChangeControle()
+                }} id="edition">
                   <FiEdit2 width="30" />
                 </button>
               </td>
             </tr>
           ))}
         </table>
+        {modalIsActive ? handleEdit(clicked) : null}
       </div>
     </div>
   </>)
