@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useCookies } from "react-cookie";
 import { FiEdit2 } from "react-icons/fi";
 import api from "../../services/api";
@@ -112,13 +112,9 @@ export const Aulas = () => {
   const [modalIsActive, setModalIsActive] = useState(false);
 
   const [cookies] = useCookies();
+  const { token } = cookies;
 
-  useEffect(() => {
-    handleData();
-  }, []);
-
-  async function handleData() {
-    const { token } = cookies;
+  const handleData = useCallback(async () => {
     const response = await api.get(`/issues`, {
       headers: {
         Authorization: `Bearer ${String(token)}`,
@@ -126,7 +122,7 @@ export const Aulas = () => {
     });
 
     setData(response.data);
-  }
+  }, [token]);
   function handleChangeControle() {
     setIsActive(!isActive);
     setModalIsActive(!modalIsActive);
@@ -134,6 +130,10 @@ export const Aulas = () => {
   function handleEdit(id) {
     return <AulasController id={id} disactiveControle={handleChangeControle} />;
   }
+
+  useEffect(() => {
+    handleData();
+  }, [handleData]);
 
   return (
     <>

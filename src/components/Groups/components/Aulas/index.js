@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import api from "../../../../services/api";
@@ -9,7 +9,6 @@ function AulaControle({ id, disactiveControle }) {
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const [body, setBody] = useState(``);
-  const [link, setLink] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
@@ -18,7 +17,7 @@ function AulaControle({ id, disactiveControle }) {
   const { user_id } = cookies;
   const { token } = cookies;
 
-  async function handleRequest() {
+  const handleRequest = useCallback(async () => {
     try {
       const response = await api
         .get(`/issues/${id}`, {
@@ -33,14 +32,13 @@ function AulaControle({ id, disactiveControle }) {
       setTitle(response.data.title);
       setTags(response.data.tags);
       setBody(response.data.body);
-      setLink(response.data.link);
       setEmail(response.data.user.email);
       setName(response.data.user.name);
     } catch (err) {
       console.log(err.message);
       return alert(err.message);
     }
-  }
+  }, [token, id]);
   async function handleDelete() {
     try {
       const response = api
@@ -93,7 +91,7 @@ function AulaControle({ id, disactiveControle }) {
 
   useEffect(() => {
     handleRequest();
-  }, []);
+  }, [handleRequest]);
 
   return (
     <div id="aula-controler">
@@ -107,8 +105,8 @@ function AulaControle({ id, disactiveControle }) {
             <div>
               <strong>Criador: </strong>
               <a
-                target="_BLANK"
-                rel=""
+                target="_blank"
+                rel="noopener noreferrer"
                 href={`http://localhost:3332/users/${email}`}
               >
                 {name}

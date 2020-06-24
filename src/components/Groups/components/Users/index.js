@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useCookies } from "react-cookie";
 import { FiTrash, FiAlertTriangle } from "react-icons/fi";
 import api from "../../../../services/api";
@@ -12,7 +12,7 @@ function Users({ disactiveControle }) {
   const [cookies] = useCookies();
   const { token, user_id } = cookies;
 
-  async function handleRequest() {
+  const handleRequest = useCallback(async () => {
     try {
       const response = await api
         .get(`/users`, {
@@ -27,7 +27,7 @@ function Users({ disactiveControle }) {
       console.log(err.message);
       return alert(err.message);
     }
-  }
+  }, [token]);
   async function handleExclude(id) {
     try {
       const response = await api
@@ -48,7 +48,7 @@ function Users({ disactiveControle }) {
 
   useEffect(() => {
     handleRequest();
-  }, []);
+  }, [handleRequest]);
 
   return (
     <div id="user-list-app">
