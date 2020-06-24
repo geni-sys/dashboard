@@ -24,6 +24,10 @@ button {
   font-family: Roboto, sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 ul li {
   list-style-type: none;
 }

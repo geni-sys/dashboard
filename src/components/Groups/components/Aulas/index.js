@@ -1,91 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
-import { useCookies } from 'react-cookie'
-import api from '../../../../services/api'
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import api from "../../../../services/api";
 
-import './styles.css';
+import "./styles.css";
 
 function AulaControle({ id, disactiveControle }) {
-  const [title, setTitle] = useState('')
-  const [tags, setTags] = useState('')
-  const [body, setBody] = useState(``)
-  const [link, setLink] = useState('')
+  const [title, setTitle] = useState("");
+  const [tags, setTags] = useState("");
+  const [body, setBody] = useState(``);
+  const [link, setLink] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
-  const [cookies] = useCookies()
-  const history = useHistory()
-  const { user_id } = cookies
-  const { token } = cookies
+  const [cookies] = useCookies();
+  const history = useHistory();
+  const { user_id } = cookies;
+  const { token } = cookies;
 
   async function handleRequest() {
     try {
-      const response = await api.get(`/issues/${id}`, {
-        headers: {
-          "Authorization": `Bearer ${String(token)}`
-        }
-      }).catch(error => {
-        console.log(error.message)
-      })
+      const response = await api
+        .get(`/issues/${id}`, {
+          headers: {
+            Authorization: `Bearer ${String(token)}`,
+          },
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
 
-      setTitle(response.data.title)
-      setTags(response.data.tags)
-      setBody(response.data.body)
-      setLink(response.data.link)
+      setTitle(response.data.title);
+      setTags(response.data.tags);
+      setBody(response.data.body);
+      setLink(response.data.link);
+      setEmail(response.data.user.email);
+      setName(response.data.user.name);
     } catch (err) {
-      console.log(err.message)
-      return alert(err.message)
+      console.log(err.message);
+      return alert(err.message);
     }
   }
   async function handleDelete() {
     try {
-      const response = api.delete(`/admin/${user_id}/destroy/issue/${id}`,
-        {
+      const response = api
+        .delete(`/admin/${user_id}/destroy/issue/${id}`, {
           headers: {
-            "Authorization": `Bearer ${String(token)}`
-          }
-        }
-      ).catch(error => alert(error.message))
+            Authorization: `Bearer ${String(token)}`,
+          },
+        })
+        .catch((error) => alert(error.message));
 
       if (response) {
-        alert("ISSUE DELETADA!")
-        disactiveControle()
-        return history.push('/home?tab=4')
+        alert("ISSUE DELETADA!");
+        disactiveControle();
+        return history.push("/home?tab=4");
       } else {
-        return alert('Erro deletando a issue')
+        return alert("Erro deletando a issue");
       }
     } catch (err) {
-      return alert(err.message)
+      return alert(err.message);
     }
   }
   async function handleSave() {
     try {
-
-      const response = api.put(`/admin/${user_id}/edit/issue/${id}`,
-        {
-          tags,
-          body: `${body}`,
-        },
-        {
-          headers: {
-            "Authorization": `Bearer ${String(token)}`
+      const response = api
+        .put(
+          `/admin/${user_id}/edit/issue/${id}`,
+          {
+            tags,
+            body: `${body}`,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${String(token)}`,
+            },
           }
-        }
-      ).catch(error => alert(error.message))
+        )
+        .catch((error) => alert(error.message));
 
       if (response) {
-        alert("ISSUE EDITADA!")
-        disactiveControle()
-        return history.push('/home?tab=4')
+        alert("ISSUE EDITADA!");
+        disactiveControle();
+        return history.push("/home?tab=4");
       } else {
-        return alert('ERRO EDITANDO a issue')
+        return alert("ERRO EDITANDO a issue");
       }
     } catch (err) {
-      return alert(err.message)
+      return alert(err.message);
     }
   }
 
   useEffect(() => {
-    handleRequest()
-  }, [])
+    handleRequest();
+  }, []);
 
   return (
     <div id="aula-controler">
@@ -101,27 +109,34 @@ function AulaControle({ id, disactiveControle }) {
               <a
                 target="_BLANK"
                 rel=""
-                href={`http://localhost:3332/users/ceo@gmail.com`}>
-                {link}
+                href={`http://localhost:3332/users/${email}`}
+              >
+                {name}
               </a>
             </div>
             <div>
               <strong>Tags: </strong>
-              <input type="text"
+              <input
+                type="text"
                 onChange={(e) => setTags(e.target.value)}
                 value={tags}
-                required />
+                required
+              />
             </div>
           </div>
           <div id="edit-aula-body">
             <strong>Corpo: </strong>
             <div id="transcription">
-              <textarea onChange={(e) => { console.log(body); setBody(String(e.target.value)) }}
+              <textarea
+                onChange={(e) => {
+                  console.log(body);
+                  setBody(String(e.target.value));
+                }}
                 value={String(body)}
                 name="area"
                 id="are"
-                required>
-              </textarea>
+                required
+              ></textarea>
             </div>
           </div>
           <div id="edit-aula-info">
@@ -129,8 +144,12 @@ function AulaControle({ id, disactiveControle }) {
             <span>Users: 234</span>
           </div>
           <div id="comtroller">
-            <button type="submit" onClick={handleSave} className="green">Salvar</button>
-            <button onClick={handleDelete} className="red">Excluir</button>
+            <button type="submit" onClick={handleSave} className="green">
+              Salvar
+            </button>
+            <button onClick={handleDelete} className="red">
+              Excluir
+            </button>
           </div>
         </li>
       </ul>

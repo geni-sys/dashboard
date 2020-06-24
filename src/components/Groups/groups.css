@@ -40,6 +40,8 @@ div.time-info div label {
   padding-left: 20px;
 }
 
+/* USER INFO STYLUS */
+
 div.usr-info div {
   padding: 5px;
   margin: 5px 10px;
@@ -67,6 +69,12 @@ div div#boody strong {
   font-size: 12px;
   font-weight: 500;
   font-family: "Roboto mono", Arial, Helvetica, sans-serif;
+}
+
+main button#usr-list-all {
+  position: absolute;
+  top: 5px;
+  right: 0;
 }
 
 /* "MENU AULAS" */

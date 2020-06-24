@@ -1,0 +1,13 @@
+thead,
+tbody,
+tr {
+  margin: 3px 0;
+}
+
+tr thead {
+  font-weight: bolder;
+}
+
+main div#user-list-app table {
+  margin-top: 50px;
+}

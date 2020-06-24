@@ -30,6 +30,10 @@ main ul {
   margin-left: 20px;
 }
 
+main ul.hidden {
+  display: none;
+}
+
 @media (max-width: 650px) {
   main ul {
     grid-template-columns: 1fr;
@@ -44,7 +48,7 @@ li.dev-item {
   box-shadow: 0 0.3px 18px 0 rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   height: auto;
-  /* padding: 20px; */
+  margin-top: 20px;
 }
 
 li.dev-item:hover {
