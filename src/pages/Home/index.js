@@ -15,9 +15,10 @@ import "./Aside.css";
 import {
   AlterData,
   Aulas,
-  Desafios,
+  Chats,
   UsersInfo,
   Dashboard,
+  Playlist,
 } from "../../components/Groups";
 
 const Home = ({ configs }) => {
@@ -28,24 +29,27 @@ const Home = ({ configs }) => {
   });
 
   function determinateWhoActive(id) {
-    if (activedGroup === 1) {
+    if (id === 1) {
       return <Dashboard />;
     }
 
-    if (activedGroup === 2) {
+    if (id === 2) {
       return <UsersInfo />;
     }
 
-    if (activedGroup === 3) {
+    if (id === 3) {
       return <AlterData />;
     }
 
-    if (activedGroup === 4) {
+    if (id === 4) {
       return <Aulas />;
     }
 
-    if (activedGroup === 5) {
-      return <Desafios />;
+    if (id === 5) {
+      return <Playlist />;
+    }
+    if (id === 6) {
+      return <Chats />;
     }
 
     setActivedGroup(1);
@@ -92,12 +96,21 @@ const Home = ({ configs }) => {
               <img src={Lesson} alt="*" id="nav-img" />
               <button>Aulas</button>
             </li>
+
             <li
               className={activedGroup === 5 ? "isActived" : ""}
               onClick={() => setActivedGroup(5)}
             >
               <img src={Labirinto} alt="*" id="nav-img" />
-              <button>Desafios</button>
+              <button>Listas</button>
+            </li>
+
+            <li
+              className={activedGroup === 6 ? "isActived" : ""}
+              onClick={() => setActivedGroup(6)}
+            >
+              <img src={Labirinto} alt="*" id="nav-img" />
+              <button>Chats</button>
             </li>
           </ul>
         </div>

@@ -1,43 +1,67 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom'
-import { useCookies } from 'react-cookie'
-import api from '../../services/api'
+import React, { useState, useCallback, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import api from "../../services/api";
 
-import './styles.css';
+import "./styles.css";
 
 const Login = () => {
-  const [email, setEmail] = useState(String(''))
-  const [password, setPassword] = useState(String(''))
+  const [email, setEmail] = useState(String(""));
+  const [password, setPassword] = useState(String(""));
 
-  const [, setCookie] = useCookies()
-
-  const history = useHistory()
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const history = useHistory();
 
   async function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
+      const response = await api
+        .post("/ok/authenticate", {
+          password,
+          email,
+        })
+        .catch((err) => {
+          return alert(err.message);
+        });
 
-      const response = await api.post('/ok/authenticate', {
-        password,
-        email,
-      }).catch(err => {
-        return alert(err.message)
-      });
+      const { token, ...rest } = response.data;
 
-      const { token, ...rest } = response.data
+      // SE É ADMIN
+      if (rest.user.canny) {
+        setCookie("token", token);
+        setCookie("user_id", rest.user.id);
+        localStorage.setItem("username", String(rest.user.name));
+        localStorage.setItem("email", String(rest.user.email));
 
-      setCookie('token', token)
-      setCookie('user_id', rest.user.id)
-      localStorage.setItem('username', String(rest.user.name))
-      localStorage.setItem('email', String(rest.user.email))
+        return history.push("/home");
+      }
 
-      history.push('/home')
+      alert("Apenas administradores podem fazer esse Login!");
     } catch (err) {
-      console.log(err.message)
-      return alert("Erro ao efetuar o login")
+      console.log(err.message);
+      return alert("Erro ao efetuar o login");
     }
   }
+
+  const middleware = useCallback(() => {
+    const { token, user_id } = cookies;
+
+    if (!token || !user_id) {
+      removeCookie("token");
+      removeCookie("user_id");
+      localStorage.removeItem("username");
+      localStorage.removeItem("email");
+
+      alert("BEM VINDO!");
+    } else {
+      return history.push("/home");
+    }
+  }, [cookies, history, removeCookie]);
+
+  useEffect(() => {
+    middleware();
+  }, []);
 
   return (
     <div id="App-login">
@@ -51,12 +75,28 @@ const Login = () => {
             <div id="input-group">
               <div>
                 <label htmlFor="email">Email</label>
-                <input value={email} required onChange={(e) => setEmail(e.target.value)} placeholder="Digite seu email" type="email" name="email" id="email" />
+                <input
+                  value={email}
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Digite seu email"
+                  type="email"
+                  name="email"
+                  id="email"
+                />
               </div>
 
               <div>
                 <label htmlFor="senha">Senha</label>
-                <input value={password} required type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Digite sua senha secreta" name="senha" id="senha" />
+                <input
+                  value={password}
+                  required
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Digite sua senha secreta"
+                  name="senha"
+                  id="senha"
+                />
               </div>
             </div>
 
@@ -71,9 +111,7 @@ const Login = () => {
         </div>
       </section>
     </div>
-
   );
-
-}
+};
 
 export default Login;

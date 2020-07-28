@@ -10,7 +10,7 @@ const Header = () => {
   const [issues, setIssues] = useState(0);
   const [ativos, setAtivos] = useState(0);
 
-  const [cookies] = useCookies();
+  const [cookies, , removeCookie] = useCookies();
   const { token } = cookies;
 
   const handleBarItems = useCallback(async () => {
@@ -38,10 +38,36 @@ const Header = () => {
 
   const history = useHistory();
   function handleQuit() {
-    history.push("/");
+    try {
+      removeCookie("token");
+      removeCookie("user_id");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
+
+      history.push("/");
+    } catch (err) {
+      console.log(err.message);
+      alert("Antes de terminar a sessão conclua os campos necessários");
+    }
   }
 
+  const middleware = useCallback(() => {
+    const { token, user_id } = cookies;
+
+    if (!token || !user_id) {
+      removeCookie("token");
+      removeCookie("user_id");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
+
+      alert("É necessário fazer o login!");
+
+      history.push("/");
+    }
+  }, [cookies, history, removeCookie]);
+
   useEffect(() => {
+    middleware();
     handleBarItems();
   }, [handleBarItems]);
 

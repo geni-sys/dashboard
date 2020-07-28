@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
+import * as _ from "lodash";
 import { useCookies } from "react-cookie";
-import { FiEdit2 } from "react-icons/fi";
+import { FiEdit2, FiTrash } from "react-icons/fi";
 import api from "../../services/api";
 // COMPONENTS SIBLING
 import AulasController from "./components/Aulas";
@@ -194,7 +195,7 @@ export const Aulas = () => {
   );
 };
 
-export const Desafios = () => {
+export const Chats = () => {
   return (
     <ul>
       <div id="quiz-group">
@@ -320,3 +321,108 @@ export const Dashboard = () => (
     </li>
   </ul>
 );
+
+export const Playlist = () => {
+  const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
+
+  async function handleExclude(id) {
+    try {
+      const res = await api.delete(`/playlists/${id}`).catch((error) => {
+        alert(error.message);
+      });
+
+      if (res) {
+        alert("DELETADA COM SUCESSO!");
+      }
+    } catch (err) {
+      console.log(err.message);
+      return alert(err.message);
+    }
+  }
+
+  function filterData(collection, value) {
+    const filtered = _.filter(collection, (item) =>
+      String(item.name).toLowerCase().includes(String(value).toLowerCase())
+    );
+
+    if (!(filtered.length === 0)) {
+      setData(filtered);
+      return;
+    }
+    handleData();
+
+    return filtered;
+  }
+
+  const [cookies] = useCookies();
+  const { token } = cookies;
+
+  const handleData = useCallback(async () => {
+    const response = await api.get(`/playlists`, {
+      headers: {
+        Authorization: `Bearer ${String(token)}`,
+      },
+    });
+
+    setData(response.data);
+  }, [token]);
+
+  useEffect(() => {
+    handleData();
+  }, [handleData]);
+
+  return (
+    <ul>
+      <div id="aulas-group">
+        <div>
+          <h3>Overview das listas</h3>
+
+          <div id="search-aula">
+            <input
+              type="search"
+              name="search"
+              id="search"
+              placeholder="Digite para começar a pesquisar"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                filterData(data, e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div id="aulas-group">
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>Artigos</th>
+              <th>Stars</th>
+              <th>Excluir</th>
+            </tr>
+
+            {data.map((list) => (
+              <tr key={list.id}>
+                <td>
+                  <strong>{list.name}</strong>
+                </td>
+                <td>
+                  <p>{list.issues.length}</p>
+                </td>
+                <td>
+                  <p>{list.stars}</p>
+                </td>
+                <td>
+                  <button id="edition" onClick={() => handleExclude(list.id)}>
+                    <FiTrash width="30" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </table>
+        </div>
+      </div>
+    </ul>
+  );
+};
