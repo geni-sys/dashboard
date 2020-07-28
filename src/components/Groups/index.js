@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as _ from "lodash";
 import { useCookies } from "react-cookie";
-import { FiEdit2, FiTrash } from "react-icons/fi";
+import { FiEdit2, FiTrash, FiCpu, FiStar, FiArrowDown } from "react-icons/fi";
 import api from "../../services/api";
 // COMPONENTS SIBLING
 import AulasController from "./components/Aulas";
@@ -98,13 +98,88 @@ export const UsersInfo = () => {
   );
 };
 
-export const AlterData = () => (
-  <>
-    <div id="change-group">
-      <h3>Alterar Dados</h3>
-    </div>
-  </>
-);
+export const AlterData = () => {
+  const [admins, setAdmins] = useState([]);
+
+  const [cookies] = useCookies();
+  const { token, user_id } = cookies;
+  const handleRequest = useCallback(async () => {
+    try {
+      const response = await api.get(`/users`, {
+        headers: {
+          Authorization: `Bearer ${String(token)}`,
+        },
+      });
+
+      setAdmins(response.data.filter((admin) => admin.canny));
+    } catch (err) {
+      console.log(err.message);
+    }
+  }, [token]);
+
+  async function handleDemote(id) {
+    try {
+      const response = await api.put(
+        `/admin/${user_id}/demote/${id}`,
+        {
+          canny: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${String(token)}`,
+          },
+        }
+      );
+
+      if (response) {
+        handleRequest();
+        return alert("Usuário rebaixado!");
+      }
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  useEffect(() => {
+    handleRequest();
+  }, [handleRequest]);
+
+  return (
+    <>
+      <div id="change-group">
+        <h3>Alterar permissões</h3>
+
+        <table id="admins">
+          <tr>
+            <th>Nome</th>
+            <th>Indetificação</th>
+            <th>Atualizado</th>
+            <th>Downgreed</th>
+          </tr>
+
+          {admins.map((adm) => (
+            <tr key={adm.id}>
+              <td>
+                <strong>{adm.name}</strong>
+              </td>
+              <td>
+                <p>{adm.email}</p>
+              </td>
+              <td>
+                <p>{adm.updatedAt || "recente"}</p>
+              </td>
+              <td>
+                <button onClick={() => handleDemote(adm.id)} id="edition">
+                  <FiArrowDown width="30" />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </table>
+      </div>
+    </>
+  );
+};
 
 export const Aulas = () => {
   const [data, setData] = useState([]);
@@ -192,45 +267,6 @@ export const Aulas = () => {
         </div>
       </ul>
     </>
-  );
-};
-
-export const Chats = () => {
-  return (
-    <ul>
-      <div id="quiz-group">
-        <div id="flouter">
-          <button> LISTAR </button>
-        </div>
-        <h3>Criar Desafios</h3>
-
-        <div id="content-group">
-          <div id="body">
-            <strong>Corpo do desafio</strong>
-            <textarea
-              name="markbody"
-              id="markdown"
-              cols="30"
-              rows="10"
-            ></textarea>
-          </div>
-
-          <div id="tips">
-            <strong>Dicas do desafio</strong>
-            <textarea
-              name="marktip"
-              id="markdown"
-              cols="30"
-              rows="10"
-            ></textarea>
-          </div>
-        </div>
-
-        <div id="footer">
-          <button id="btn-default">Registrar</button>
-        </div>
-      </div>
-    </ul>
   );
 };
 
@@ -421,6 +457,230 @@ export const Playlist = () => {
               </tr>
             ))}
           </table>
+        </div>
+      </div>
+    </ul>
+  );
+};
+
+export const Chats = () => {
+  const [isActived, setIsActived] = useState(false);
+
+  function Maneger({ id }) {
+    return (
+      <div key={id} id="manege-returns">
+        <div id="item">
+          <div id="left">
+            <FiCpu />
+          </div>
+
+          <div id="right">
+            <div>
+              <strong>Elias alexandre</strong>
+              <span>
+                <FiStar /> 234
+              </span>
+            </div>
+
+            <p id="delimited">
+              Aumente a solução de problemas na primeira chamada: O
+              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
+              técnicos, entre outros fatores, ajudam a reduzir as transferências
+              para o suporte Nível 2 e a resolver mais problemas na primeira
+              chamada.
+            </p>
+          </div>
+        </div>
+
+        <div id="resolver">
+          <label htmlFor="reply">Mensagem:</label>
+          <textarea
+            placeholder="Mensagem de resposta"
+            name="reply"
+            id="reply"
+            cols="30"
+            rows="10"
+          ></textarea>
+          <button id="btn-default">Enviar</button>
+        </div>
+      </div>
+    );
+  }
+
+  function handleComponents(item) {
+    if (isActived) {
+      return <Maneger id={item} />;
+    }
+
+    return (
+      <ul id="mensagens">
+        <li id="mensagens-group">
+          <div id="ilustration">
+            <FiCpu />
+          </div>
+
+          <div id="infinity">
+            <div>
+              <strong>Elias alexandre</strong>
+              <span>
+                <FiStar /> 234
+              </span>
+            </div>
+
+            <p id="limitation">
+              Aumente a solução de problemas na primeira chamada: O
+              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
+              técnicos, entre outros fatores, ajudam a reduzir as transferências
+              para o suporte Nível 2 e a resolver mais problemas na primeira
+              chamada.
+            </p>
+          </div>
+        </li>
+
+        <li id="mensagens-group">
+          <div id="ilustration">
+            <FiCpu />
+          </div>
+
+          <div id="infinity">
+            <div>
+              <strong>Elias alexandre</strong>
+              <span>
+                <FiStar /> 234
+              </span>
+            </div>
+
+            <p id="limitation">
+              Aumente a solução de problemas na primeira chamada: O
+              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
+              técnicos, entre outros fatores, ajudam a reduzir as transferências
+              para o suporte Nível 2 e a resolver mais problemas na primeira
+              chamada.
+            </p>
+          </div>
+        </li>
+
+        <li id="mensagens-group">
+          <div id="ilustration">
+            <FiCpu />
+          </div>
+
+          <div id="infinity">
+            <div>
+              <strong>Elias alexandre</strong>
+              <span>
+                <FiStar /> 234
+              </span>
+            </div>
+
+            <p id="limitation">
+              Aumente a solução de problemas na primeira chamada: O
+              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
+              técnicos, entre outros fatores, ajudam a reduzir as transferências
+              para o suporte Nível 2 e a resolver mais problemas na primeira
+              chamada.
+            </p>
+          </div>
+        </li>
+
+        <li id="mensagens-group">
+          <div id="ilustration">
+            <FiCpu />
+          </div>
+
+          <div id="infinity">
+            <div>
+              <strong>Elias alexandre</strong>
+              <span>
+                <FiStar /> 234
+              </span>
+            </div>
+
+            <p id="limitation">
+              Aumente a solução de problemas na primeira chamada: O
+              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
+              técnicos, entre outros fatores, ajudam a reduzir as transferências
+              para o suporte Nível 2 e a resolver mais problemas na primeira
+              chamada.
+            </p>
+          </div>
+        </li>
+
+        <li id="mensagens-group">
+          <div id="ilustration">
+            <FiCpu />
+          </div>
+
+          <div id="infinity">
+            <div>
+              <strong>Elias alexandre</strong>
+              <span>
+                <FiStar /> 234
+              </span>
+            </div>
+
+            <p id="limitation">
+              Aumente a solução de problemas na primeira chamada: O
+              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
+              técnicos, entre outros fatores, ajudam a reduzir as transferências
+              para o suporte Nível 2 e a resolver mais problemas na primeira
+              chamada.
+            </p>
+          </div>
+        </li>
+
+        <li id="mensagens-group">
+          <div id="ilustration">
+            <FiCpu />
+          </div>
+
+          <div id="infinity">
+            <div>
+              <strong>Elias alexandre</strong>
+              <span>
+                <FiStar /> 234
+              </span>
+            </div>
+
+            <p id="limitation">
+              Aumente a solução de problemas na primeira chamada: O
+              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
+              técnicos, entre outros fatores, ajudam a reduzir as transferências
+              para o suporte Nível 2 e a resolver mais problemas na primeira
+              chamada.
+            </p>
+          </div>
+        </li>
+      </ul>
+    );
+  }
+
+  return (
+    <ul>
+      <div id="quiz-group">
+        <h3>GERENCIAR:</h3>
+
+        <div id="content-group">
+          <div id="body">
+            <strong>Retornos</strong>
+
+            {handleComponents(1)}
+          </div>
+
+          <div id="tips">
+            <strong>Controles</strong>
+            <span>Não é possível deletar nenhuma mensagem.</span>
+            <span>
+              Ao responder será retirada da lista, mais podera ser requisitada
+              caso necessário. (pelo ID)
+            </span>
+          </div>
+        </div>
+
+        <div id="footer">
+          <button onClick={() => setIsActived(!isActived)} id="btn-default">
+            Recarregar
+          </button>
         </div>
       </div>
     </ul>

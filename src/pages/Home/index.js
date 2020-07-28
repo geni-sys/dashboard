@@ -12,6 +12,7 @@ import "./styles.css";
 import "./Aside.css";
 
 // "COMPONENTS"
+import { FiMessageSquare } from "react-icons/fi";
 import {
   AlterData,
   Aulas,
@@ -94,7 +95,7 @@ const Home = ({ configs }) => {
               onClick={() => setActivedGroup(4)}
             >
               <img src={Lesson} alt="*" id="nav-img" />
-              <button>Aulas</button>
+              <button>Artigos</button>
             </li>
 
             <li
@@ -109,7 +110,7 @@ const Home = ({ configs }) => {
               className={activedGroup === 6 ? "isActived" : ""}
               onClick={() => setActivedGroup(6)}
             >
-              <img src={Labirinto} alt="*" id="nav-img" />
+              <FiMessageSquare id="nav-img" />
               <button>Chats</button>
             </li>
           </ul>

@@ -14,8 +14,7 @@ function AulaControle({ id, disactiveControle }) {
 
   const [cookies] = useCookies();
   const history = useHistory();
-  const { user_id } = cookies;
-  const { token } = cookies;
+  const { user_id, token } = cookies;
 
   const handleRequest = useCallback(async () => {
     try {
