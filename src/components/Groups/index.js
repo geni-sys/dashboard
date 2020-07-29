@@ -270,93 +270,117 @@ export const Aulas = () => {
   );
 };
 
-export const Dashboard = () => (
-  <ul>
-    <li className="dev-item">
-      <header>
-        <strong>Aulas</strong>
-      </header>
-      <div className="user-info">
-        <div>
-          <p>Criadas</p>
-          <label htmlFor="">1234</label>
-        </div>
-        <div>
-          <p>Destaques</p>
-          <label htmlFor="">42343</label>
-        </div>
-        <div>
-          <p>In Coming</p>
-          <label htmlFor="">2343</label>
-        </div>
-      </div>
-      <div id="footer"></div>
-    </li>
+export const Dashboard = () => {
+  const [artigos, setArtigos] = useState({});
+  // const [users, setUsers] = useState({});
+  // const [lists, setLists] = useState({});
 
-    <li className="dev-item">
-      <header>
-        <strong>Notas de feedback</strong>
-      </header>
-      <div className="user-info">
-        <div>
-          <p>0 á 5</p>
-          <label htmlFor="">1234</label>
-        </div>
-        <div>
-          <p>6 á 8</p>
-          <label htmlFor="">42343</label>
-        </div>
-        <div>
-          <p>9 á 10</p>
-          <label htmlFor="">2343</label>
-        </div>
-      </div>
-      <div id="footer"></div>
-    </li>
+  const [cookies] = useCookies();
+  const { token } = cookies;
 
-    <li className="dev-item">
-      <header>
-        <strong>Aulas criadas</strong>
-      </header>
-      <div className="user-info">
-        <div>
-          <p>Criadas</p>
-          <label htmlFor="">1234</label>
-        </div>
-        <div>
-          <p>Destaques</p>
-          <label htmlFor="">42343</label>
-        </div>
-        <div>
-          <p>In Coming</p>
-          <label htmlFor="">2343</label>
-        </div>
-      </div>
-      <div id="footer"></div>
-    </li>
+  const handleRequest = useCallback(async () => {
+    try {
+      const response = await api.get("/counts/issues", {
+        headers: {
+          Authorization: `Bearer ${String(token)}`,
+        },
+      });
 
-    <li className="dev-item">
-      <header>
-        <strong>Aulas criadas</strong>
-      </header>
-      <div className="user-info">
-        <div>
-          <p>Criadas</p>
-          <label htmlFor="">1234</label>
+      setArtigos(response.data);
+    } catch (err) {
+      console.log(err.messge);
+      alert(err.messge);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    handleRequest();
+  }, [handleRequest]);
+
+  return (
+    <ul>
+      <li className="dev-item">
+        <header>
+          <strong>Artigos</strong>
+        </header>
+        <div className="user-info">
+          <div>
+            <p style={{ color: "var(--mention-detail)" }}>Criados</p>
+            <label htmlFor="">{artigos.criadas}</label>
+          </div>
+          <div>
+            <p style={{ color: "green" }}>Destaques</p>
+            <label htmlFor="">{artigos.destaques}</label>
+          </div>
+          <div>
+            <p style={{ color: "var(--notification)" }}>Excluídos</p>
+            <label htmlFor="">2343</label>
+          </div>
         </div>
-        <div>
-          <p>Destaques</p>
-          <label htmlFor="">42343</label>
+        <div id="footer"></div>
+      </li>
+
+      <li className="dev-item">
+        <header>
+          <strong>Notas de feedback</strong>
+        </header>
+        <div className="user-info">
+          <div>
+            <p style={{ color: "var(--notification)" }}>0 á 5</p>
+            <label htmlFor="">1234</label>
+          </div>
+          <div>
+            <p style={{ color: "var(--mention-detail)" }}>6 á 8</p>
+            <label htmlFor="">42343</label>
+          </div>
+          <div>
+            <p style={{ color: "green" }}>9 á 10</p>
+            <label htmlFor="">2343</label>
+          </div>
         </div>
-        <div>
-          <p>In Coming</p>
-          <label htmlFor="">2343</label>
+        <div id="footer"></div>
+      </li>
+
+      <li className="dev-item">
+        <header>
+          <strong>Usuários</strong>
+        </header>
+        <div className="user-info">
+          <div>
+            <p style={{ color: "var(--notification)" }}>Fecharam a conta |</p>
+            <label htmlFor="">1234</label>
+          </div>
+          <div>
+            <p style={{ color: "green" }}>Destaques</p>
+            <label htmlFor="">42343</label>
+          </div>
         </div>
-      </div>
-      <div id="footer"></div>
-    </li>
-  </ul>
-);
+        <div id="footer"></div>
+      </li>
+
+      <li className="dev-item">
+        <header>
+          <strong>Listas</strong>
+        </header>
+        <div className="user-info">
+          <div>
+            <p style={{ color: "var(--notification)" }}>Criadas</p>
+            <label htmlFor="">1234</label>
+          </div>
+          <div>
+            <p style={{ color: "var(--mention-detail)" }}>Destaques</p>
+            <label htmlFor="">42343</label>
+          </div>
+          <div>
+            <p style={{ color: "green" }}>Excluídos</p>
+            <label htmlFor="">42343</label>
+          </div>
+        </div>
+        <div id="footer"></div>
+      </li>
+    </ul>
+  );
+};
 
 export const Playlist = () => {
   const [search, setSearch] = useState("");
@@ -464,9 +488,53 @@ export const Playlist = () => {
 };
 
 export const Chats = () => {
+  const [feedbacks, setFeedbacks] = useState([]);
   const [isActived, setIsActived] = useState(false);
 
+  const [cookies] = useCookies();
+  const { token } = cookies;
+
+  const handleRequest = useCallback(async () => {
+    try {
+      const resFeed = await api.get("/feedbacks", {
+        headers: {
+          Authorization: `Bearer ${String(token)}`,
+        },
+      });
+
+      setFeedbacks(resFeed.data);
+    } catch (err) {
+      console.log(err.messge);
+      alert(err.messge);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    handleRequest();
+  }, [handleRequest]);
+
   function Maneger({ id }) {
+    const [feed, setFeed] = useState({});
+
+    const getFeedData = useCallback(async () => {
+      try {
+        const response = await api.get(`/feedbacks/${id}`, {
+          headers: {
+            Authorization: `Bearer ${String(token)}`,
+          },
+        });
+
+        setFeed(response.data);
+      } catch (err) {
+        console.log(err.messge);
+        alert(err.messge);
+      }
+    }, [token]);
+
+    useEffect(() => {
+      getFeedData();
+    }, [getFeedData]);
+
     return (
       <div key={id} id="manege-returns">
         <div id="item">
@@ -478,17 +546,11 @@ export const Chats = () => {
             <div>
               <strong>Elias alexandre</strong>
               <span>
-                <FiStar /> 234
+                <FiStar /> {feed.stars}
               </span>
             </div>
 
-            <p id="delimited">
-              Aumente a solução de problemas na primeira chamada: O
-              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
-              técnicos, entre outros fatores, ajudam a reduzir as transferências
-              para o suporte Nível 2 e a resolver mais problemas na primeira
-              chamada.
-            </p>
+            <p id="delimited">{feed.message}</p>
           </div>
         </div>
 
@@ -507,150 +569,31 @@ export const Chats = () => {
     );
   }
 
-  function handleComponents(item) {
+  function HandleComponents({ item }) {
     if (isActived) {
       return <Maneger id={item} />;
     }
 
     return (
       <ul id="mensagens">
-        <li id="mensagens-group">
-          <div id="ilustration">
-            <FiCpu />
-          </div>
-
-          <div id="infinity">
-            <div>
-              <strong>Elias alexandre</strong>
-              <span>
-                <FiStar /> 234
-              </span>
+        {feedbacks.map((feed) => (
+          <li key={feed.id} id="mensagens-group">
+            <div id="ilustration">
+              <FiCpu />
             </div>
 
-            <p id="limitation">
-              Aumente a solução de problemas na primeira chamada: O
-              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
-              técnicos, entre outros fatores, ajudam a reduzir as transferências
-              para o suporte Nível 2 e a resolver mais problemas na primeira
-              chamada.
-            </p>
-          </div>
-        </li>
+            <div id="infinity">
+              <div>
+                <strong>{feed.title}</strong>
+                <span>
+                  <FiStar /> {feed.stars}
+                </span>
+              </div>
 
-        <li id="mensagens-group">
-          <div id="ilustration">
-            <FiCpu />
-          </div>
-
-          <div id="infinity">
-            <div>
-              <strong>Elias alexandre</strong>
-              <span>
-                <FiStar /> 234
-              </span>
+              <p id="limitation">{feed.message}</p>
             </div>
-
-            <p id="limitation">
-              Aumente a solução de problemas na primeira chamada: O
-              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
-              técnicos, entre outros fatores, ajudam a reduzir as transferências
-              para o suporte Nível 2 e a resolver mais problemas na primeira
-              chamada.
-            </p>
-          </div>
-        </li>
-
-        <li id="mensagens-group">
-          <div id="ilustration">
-            <FiCpu />
-          </div>
-
-          <div id="infinity">
-            <div>
-              <strong>Elias alexandre</strong>
-              <span>
-                <FiStar /> 234
-              </span>
-            </div>
-
-            <p id="limitation">
-              Aumente a solução de problemas na primeira chamada: O
-              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
-              técnicos, entre outros fatores, ajudam a reduzir as transferências
-              para o suporte Nível 2 e a resolver mais problemas na primeira
-              chamada.
-            </p>
-          </div>
-        </li>
-
-        <li id="mensagens-group">
-          <div id="ilustration">
-            <FiCpu />
-          </div>
-
-          <div id="infinity">
-            <div>
-              <strong>Elias alexandre</strong>
-              <span>
-                <FiStar /> 234
-              </span>
-            </div>
-
-            <p id="limitation">
-              Aumente a solução de problemas na primeira chamada: O
-              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
-              técnicos, entre outros fatores, ajudam a reduzir as transferências
-              para o suporte Nível 2 e a resolver mais problemas na primeira
-              chamada.
-            </p>
-          </div>
-        </li>
-
-        <li id="mensagens-group">
-          <div id="ilustration">
-            <FiCpu />
-          </div>
-
-          <div id="infinity">
-            <div>
-              <strong>Elias alexandre</strong>
-              <span>
-                <FiStar /> 234
-              </span>
-            </div>
-
-            <p id="limitation">
-              Aumente a solução de problemas na primeira chamada: O
-              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
-              técnicos, entre outros fatores, ajudam a reduzir as transferências
-              para o suporte Nível 2 e a resolver mais problemas na primeira
-              chamada.
-            </p>
-          </div>
-        </li>
-
-        <li id="mensagens-group">
-          <div id="ilustration">
-            <FiCpu />
-          </div>
-
-          <div id="infinity">
-            <div>
-              <strong>Elias alexandre</strong>
-              <span>
-                <FiStar /> 234
-              </span>
-            </div>
-
-            <p id="limitation">
-              Aumente a solução de problemas na primeira chamada: O
-              gerenciamento de várias sessões, o Instant Chat, a colaboração dos
-              técnicos, entre outros fatores, ajudam a reduzir as transferências
-              para o suporte Nível 2 e a resolver mais problemas na primeira
-              chamada.
-            </p>
-          </div>
-        </li>
+          </li>
+        ))}
       </ul>
     );
   }
@@ -664,7 +607,7 @@ export const Chats = () => {
           <div id="body">
             <strong>Retornos</strong>
 
-            {handleComponents(1)}
+            <HandleComponents item={4} />
           </div>
 
           <div id="tips">
