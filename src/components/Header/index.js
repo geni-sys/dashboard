@@ -17,18 +17,23 @@ const Header = () => {
     try {
       const usrs = await api.get("/users", {
         headers: {
-          Authorization: `Bearer ${String(token)}`,
+          Authorization: String(token),
         },
       });
       const issues_res = await api.get("/issues", {
         headers: {
-          Authorization: `Bearer ${String(token)}`,
+          Authorization: String(token),
+        },
+      });
+      const list_res = await api.get("/playlists", {
+        headers: {
+          Authorization: String(token),
         },
       });
 
       // "SETTERS"
       setIssues(issues_res.data.length);
-      setAtivos(usrs.data.length);
+      setAtivos(list_res.data.lists.length);
       setUsers(usrs.data.length);
     } catch (err) {
       console.log(err.message);
@@ -43,11 +48,13 @@ const Header = () => {
       removeCookie("user_id");
       localStorage.removeItem("name");
       localStorage.removeItem("email");
+      localStorage.removeItem("questions_status");
+      localStorage.removeItem("github_avatar");
 
       history.push("/");
     } catch (err) {
       console.log(err.message);
-      alert("Antes de terminar a sessão conclua os campos necessários");
+      return alert("Antes de terminar a sessão conclua os campos necessários");
     }
   }
 
@@ -59,6 +66,8 @@ const Header = () => {
       removeCookie("user_id");
       localStorage.removeItem("name");
       localStorage.removeItem("email");
+      localStorage.removeItem("questions_status");
+      localStorage.removeItem("github_avatar");
 
       alert("É necessário fazer o login!");
 
@@ -76,7 +85,6 @@ const Header = () => {
       <nav id="navbar">
         <div id="logo">
           <h4>
-            {" "}
             <a href="/">GENESYS</a>{" "}
           </h4>
         </div>
@@ -90,14 +98,14 @@ const Header = () => {
           </li>
 
           <li className="itens">
-            <h3>Lessons</h3>
+            <h3>Artigos</h3>
             <label className="info-labels" htmlFor="">
               {issues}
             </label>
           </li>
 
           <li className="itens">
-            <h3>Ativos</h3>
+            <h3>Listas</h3>
             <label className="info-labels" htmlFor="">
               {ativos}
             </label>

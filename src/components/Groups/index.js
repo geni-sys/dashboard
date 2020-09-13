@@ -107,7 +107,7 @@ export const AlterData = () => {
     try {
       const response = await api.get(`/users`, {
         headers: {
-          Authorization: `Bearer ${String(token)}`,
+          Authorization: String(token),
         },
       });
 
@@ -126,7 +126,7 @@ export const AlterData = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${String(token)}`,
+            Authorization: String(token),
           },
         }
       );
@@ -193,7 +193,7 @@ export const Aulas = () => {
   const handleData = useCallback(async () => {
     const response = await api.get(`/issues`, {
       headers: {
-        Authorization: `Bearer ${String(token)}`,
+        Authorization: String(token),
       },
     });
 
@@ -282,7 +282,7 @@ export const Dashboard = () => {
     try {
       const response = await api.get("/counts/issues", {
         headers: {
-          Authorization: `Bearer ${String(token)}`,
+          Authorization: String(token),
         },
       });
 
@@ -421,11 +421,11 @@ export const Playlist = () => {
   const handleData = useCallback(async () => {
     const response = await api.get(`/playlists`, {
       headers: {
-        Authorization: `Bearer ${String(token)}`,
+        Authorization: String(token),
       },
     });
 
-    setData(response.data);
+    setData(response.data.lists);
   }, [token]);
 
   useEffect(() => {
@@ -498,7 +498,7 @@ export const Chats = () => {
     try {
       const resFeed = await api.get("/feedbacks", {
         headers: {
-          Authorization: `Bearer ${String(token)}`,
+          Authorization: String(token),
         },
       });
 
@@ -520,7 +520,7 @@ export const Chats = () => {
       try {
         const response = await api.get(`/feedbacks/${id}`, {
           headers: {
-            Authorization: `Bearer ${String(token)}`,
+            Authorization: String(token),
           },
         });
 

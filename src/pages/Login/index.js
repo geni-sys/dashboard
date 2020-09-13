@@ -25,19 +25,21 @@ const Login = () => {
           return alert(err.message);
         });
 
-      const { token, ...rest } = response.data;
+      const { token, user } = response.data;
 
       // SE É ADMIN
-      if (rest.user.canny) {
-        setCookie("token", token);
-        setCookie("user_id", rest.user.id);
-        localStorage.setItem("username", String(rest.user.name));
-        localStorage.setItem("email", String(rest.user.email));
+      if (user.canny) {
+        setCookie("token", `Bearer ${token}`.trim());
+        setCookie("user_id", user.id);
+        localStorage.setItem("name", String(user.name));
+        localStorage.setItem("email", String(user.email));
+        localStorage.setItem("questions_status", String(user.completed));
+        localStorage.setItem("github_avatar", String(user.github + ".png"));
 
         return history.push("/home");
       }
 
-      alert("Apenas administradores podem fazer esse Login!");
+      return alert("Apenas administradores podem fazer esse Login!");
     } catch (err) {
       console.log(err.message);
       return alert("Erro ao efetuar o login");
@@ -50,10 +52,11 @@ const Login = () => {
     if (!token || !user_id) {
       removeCookie("token");
       removeCookie("user_id");
-      localStorage.removeItem("username");
+      localStorage.removeItem("name");
       localStorage.removeItem("email");
-
-      alert("BEM VINDO!");
+      localStorage.removeItem("questions_status");
+      localStorage.removeItem("github_avatar");
+      // alert("BEM VINDO!");
     } else {
       return history.push("/home");
     }
