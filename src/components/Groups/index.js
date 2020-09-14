@@ -272,21 +272,43 @@ export const Aulas = () => {
 
 export const Dashboard = () => {
   const [artigos, setArtigos] = useState({});
-  // const [users, setUsers] = useState({});
-  // const [lists, setLists] = useState({});
+  const [users, setUsers] = useState({});
+  const [lists, setLists] = useState({});
+  const [feedbacks, setFeedbacks] = useState({});
 
   const [cookies] = useCookies();
   const { token } = cookies;
 
   const handleRequest = useCallback(async () => {
     try {
-      const response = await api.get("/counts/issues", {
+      const response_issue = await api.get("/counts/issues", {
         headers: {
           Authorization: String(token),
         },
       });
 
-      setArtigos(response.data);
+      const response_users = await api.get("/counts/users", {
+        headers: {
+          Authorization: String(token),
+        },
+      });
+
+      const response_lists = await api.get("/counts/lists", {
+        headers: {
+          Authorization: String(token),
+        },
+      });
+
+      const response_feedbacks = await api.get("/counts/feedbacks", {
+        headers: {
+          Authorization: String(token),
+        },
+      });
+
+      setArtigos(response_issue.data);
+      setUsers(response_users.data);
+      setLists(response_lists.data);
+      setFeedbacks(response_feedbacks.data);
     } catch (err) {
       console.log(err.messge);
       alert(err.messge);
@@ -327,15 +349,15 @@ export const Dashboard = () => {
         <div className="user-info">
           <div>
             <p style={{ color: "var(--notification)" }}>0 á 5</p>
-            <label htmlFor="">1234</label>
+            <label htmlFor="">{feedbacks.basic}</label>
           </div>
           <div>
             <p style={{ color: "var(--mention-detail)" }}>6 á 8</p>
-            <label htmlFor="">42343</label>
+            <label htmlFor="">{feedbacks.normal}</label>
           </div>
           <div>
             <p style={{ color: "green" }}>9 á 10</p>
-            <label htmlFor="">2343</label>
+            <label htmlFor="">{feedbacks.advanced}</label>
           </div>
         </div>
         <div id="footer"></div>
@@ -348,11 +370,11 @@ export const Dashboard = () => {
         <div className="user-info">
           <div>
             <p style={{ color: "var(--notification)" }}>Fecharam a conta |</p>
-            <label htmlFor="">1234</label>
+            <label htmlFor="">{users.excluded}</label>
           </div>
           <div>
             <p style={{ color: "green" }}>Destaques</p>
-            <label htmlFor="">42343</label>
+            <label htmlFor="">{users.destaques}</label>
           </div>
         </div>
         <div id="footer"></div>
@@ -365,15 +387,15 @@ export const Dashboard = () => {
         <div className="user-info">
           <div>
             <p style={{ color: "var(--notification)" }}>Criadas</p>
-            <label htmlFor="">1234</label>
+            <label htmlFor="">{lists.createds}</label>
           </div>
           <div>
             <p style={{ color: "var(--mention-detail)" }}>Destaques</p>
-            <label htmlFor="">42343</label>
+            <label htmlFor="">{lists.destaques}</label>
           </div>
           <div>
             <p style={{ color: "green" }}>Excluídos</p>
-            <label htmlFor="">42343</label>
+            <label htmlFor="">{lists.excludeds}</label>
           </div>
         </div>
         <div id="footer"></div>
