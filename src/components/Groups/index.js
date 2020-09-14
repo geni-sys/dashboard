@@ -136,7 +136,8 @@ export const AlterData = () => {
         return alert("Usuário rebaixado!");
       }
     } catch (err) {
-      alert(err.message);
+      console.log(err);
+      alert("Apenas CEO pode rebaixar usuários");
     }
   }
 

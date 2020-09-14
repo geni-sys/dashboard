@@ -17,7 +17,7 @@ function Users({ disactiveControle }) {
       const response = await api
         .get(`/users`, {
           headers: {
-            Authorization: `Bearer ${String(token)}`,
+            Authorization: String(token),
           },
         })
         .catch((error) => alert(error.message));
@@ -32,7 +32,7 @@ function Users({ disactiveControle }) {
     try {
       const response = await api
         .delete(`/admin/${user_id}/delete/user/${id}`, {
-          headers: { Authorization: `Bearer ${String(token)}` },
+          headers: { Authorization: String(token) },
         })
         .catch((error) => alert(error.message));
 

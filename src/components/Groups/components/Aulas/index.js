@@ -21,7 +21,7 @@ function AulaControle({ id, disactiveControle }) {
       const response = await api
         .get(`/issues/${id}`, {
           headers: {
-            Authorization: `Bearer ${String(token)}`,
+            Authorization: String(token),
           },
         })
         .catch((error) => {
@@ -43,7 +43,7 @@ function AulaControle({ id, disactiveControle }) {
       const response = api
         .delete(`/admin/${user_id}/destroy/issue/${id}`, {
           headers: {
-            Authorization: `Bearer ${String(token)}`,
+            Authorization: String(token),
           },
         })
         .catch((error) => alert(error.message));
@@ -70,7 +70,7 @@ function AulaControle({ id, disactiveControle }) {
           },
           {
             headers: {
-              Authorization: `Bearer ${String(token)}`,
+              Authorization: String(token),
             },
           }
         )
@@ -106,7 +106,7 @@ function AulaControle({ id, disactiveControle }) {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href={`http://localhost:3332/users/${email}`}
+                href={`http://localhost:3337/users/${email}`}
               >
                 {name}
               </a>
