@@ -1,9 +1,12 @@
+/* eslint-disable quotes */
 import React, { useState, useEffect, useCallback } from "react";
 import * as _ from "lodash";
 import { useCookies } from "react-cookie";
-import { FiEdit2, FiTrash, FiCpu, FiStar, FiArrowDown } from "react-icons/fi";
+import { FiEdit2, FiTrash, FiArrowDown } from "react-icons/fi";
 import api from "../../services/api";
+import formatTimeStamps from "../Utils/formatTimeStamps";
 // COMPONENTS SIBLING
+import ChatsMessages from "../ChatsMessages";
 import AulasController from "./components/Aulas";
 import UserController from "./components/Users";
 // TYLUS
@@ -48,7 +51,7 @@ export const UsersInfo = () => {
             </div>
           </div>
 
-          <div id="footer-u"></div>
+          <div id="footer-u" />
         </li>
 
         <li className="dev-item">
@@ -88,7 +91,7 @@ export const UsersInfo = () => {
             </div>
           </div>
 
-          <div id="footer-u"></div>
+          <div id="footer-u" />
         </li>
       </ul>
       <button onClick={handleChangeControle} id="usr-list-all">
@@ -105,7 +108,7 @@ export const AlterData = () => {
   const { token, user_id } = cookies;
   const handleRequest = useCallback(async () => {
     try {
-      const response = await api.get(`/users`, {
+      const response = await api.get("/users", {
         headers: {
           Authorization: String(token),
         },
@@ -137,8 +140,10 @@ export const AlterData = () => {
       }
     } catch (err) {
       console.log(err);
-      alert("Apenas CEO pode rebaixar usuários");
+      return alert("Apenas CEO pode rebaixar usuários");
     }
+
+    return 1;
   }
 
   useEffect(() => {
@@ -167,7 +172,7 @@ export const AlterData = () => {
                 <p>{adm.email}</p>
               </td>
               <td>
-                <p>{adm.updatedAt || "recente"}</p>
+                <p>{formatTimeStamps(adm.updatedAt) || "recente"}</p>
               </td>
               <td>
                 <button onClick={() => handleDemote(adm.id)} id="edition">
@@ -192,7 +197,7 @@ export const Aulas = () => {
   const { token } = cookies;
 
   const handleData = useCallback(async () => {
-    const response = await api.get(`/issues`, {
+    const response = await api.get("/issues", {
       headers: {
         Authorization: String(token),
       },
@@ -233,7 +238,7 @@ export const Aulas = () => {
             <table id={isActive ? "" : "table-actived"}>
               <tr>
                 <th>Título</th>
-                <th>Idioma</th>
+                <th>Recurso</th>
                 <th>Criador</th>
                 <th>Controle</th>
               </tr>
@@ -241,7 +246,13 @@ export const Aulas = () => {
               {data.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    <strong>{item.title}</strong>
+                    <a
+                      href={`http://localhost:3337/user/learning/${item.id}`}
+                      rel="noreferrer"
+                      target="_BLANK"
+                    >
+                      {item.title}
+                    </a>
                   </td>
                   <td>
                     <p>{item.language}</p>
@@ -251,6 +262,7 @@ export const Aulas = () => {
                   </td>
                   <td>
                     <button
+                      type="button"
                       onClick={() => {
                         setClicked(item.id);
                         handleChangeControle();
@@ -340,7 +352,7 @@ export const Dashboard = () => {
             <label htmlFor="">2343</label>
           </div>
         </div>
-        <div id="footer"></div>
+        <div id="footer" />
       </li>
 
       <li className="dev-item">
@@ -361,7 +373,7 @@ export const Dashboard = () => {
             <label htmlFor="">{feedbacks.advanced}</label>
           </div>
         </div>
-        <div id="footer"></div>
+        <div id="footer" />
       </li>
 
       <li className="dev-item">
@@ -378,7 +390,7 @@ export const Dashboard = () => {
             <label htmlFor="">{users.destaques}</label>
           </div>
         </div>
-        <div id="footer"></div>
+        <div id="footer" />
       </li>
 
       <li className="dev-item">
@@ -399,7 +411,7 @@ export const Dashboard = () => {
             <label htmlFor="">{lists.excludeds}</label>
           </div>
         </div>
-        <div id="footer"></div>
+        <div id="footer" />
       </li>
     </ul>
   );
@@ -442,7 +454,7 @@ export const Playlist = () => {
   const { token } = cookies;
 
   const handleData = useCallback(async () => {
-    const response = await api.get(`/playlists`, {
+    const response = await api.get("/playlists", {
       headers: {
         Authorization: String(token),
       },
@@ -488,7 +500,13 @@ export const Playlist = () => {
             {data.map((list) => (
               <tr key={list.id}>
                 <td>
-                  <strong>{list.name}</strong>
+                  <a
+                    href={`http://localhost:3337/playlists?watch=${list.id}`}
+                    rel="noreferrer"
+                    target="_BLANK"
+                  >
+                    {list.name}
+                  </a>
                 </td>
                 <td>
                   <p>{list.issues.length}</p>
@@ -510,145 +528,33 @@ export const Playlist = () => {
   );
 };
 
-export const Chats = () => {
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [isActived, setIsActived] = useState(false);
+export const Chats = () => (
+  <ul>
+    <div id="quiz-group">
+      <h3>GERENCIAR:</h3>
 
-  const [cookies] = useCookies();
-  const { token } = cookies;
+      <div id="content-group">
+        <div id="body">
+          <strong>Retornos</strong>
 
-  const handleRequest = useCallback(async () => {
-    try {
-      const resFeed = await api.get("/feedbacks", {
-        headers: {
-          Authorization: String(token),
-        },
-      });
-
-      setFeedbacks(resFeed.data);
-    } catch (err) {
-      console.log(err.messge);
-      alert(err.messge);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    handleRequest();
-  }, [handleRequest]);
-
-  function Maneger({ id }) {
-    const [feed, setFeed] = useState({});
-
-    const getFeedData = useCallback(async () => {
-      try {
-        const response = await api.get(`/feedbacks/${id}`, {
-          headers: {
-            Authorization: String(token),
-          },
-        });
-
-        setFeed(response.data);
-      } catch (err) {
-        console.log(err.messge);
-        alert(err.messge);
-      }
-    }, [token]);
-
-    useEffect(() => {
-      getFeedData();
-    }, [getFeedData]);
-
-    return (
-      <div key={id} id="manege-returns">
-        <div id="item">
-          <div id="left">
-            <FiCpu />
-          </div>
-
-          <div id="right">
-            <div>
-              <strong>Elias alexandre</strong>
-              <span>
-                <FiStar /> {feed.stars}
-              </span>
-            </div>
-
-            <p id="delimited">{feed.message}</p>
-          </div>
+          <ChatsMessages />
         </div>
 
-        <div id="resolver">
-          <label htmlFor="reply">Mensagem:</label>
-          <textarea
-            placeholder="Mensagem de resposta"
-            name="reply"
-            id="reply"
-            cols="30"
-            rows="10"
-          ></textarea>
-          <button id="btn-default">Enviar</button>
+        <div id="tips">
+          <strong>Controles</strong>
+          <span>Não é possível deletar nenhuma mensagem.</span>
+          <span>
+            Ao responder será retirada da lista, mais podera ser requisitada
+            caso necessário. (pelo ID)
+          </span>
         </div>
       </div>
-    );
-  }
 
-  function HandleComponents({ item }) {
-    if (isActived) {
-      return <Maneger id={item} />;
-    }
-
-    return (
-      <ul id="mensagens">
-        {feedbacks.map((feed) => (
-          <li key={feed.id} id="mensagens-group">
-            <div id="ilustration">
-              <FiCpu />
-            </div>
-
-            <div id="infinity">
-              <div>
-                <strong>{feed.title}</strong>
-                <span>
-                  <FiStar /> {feed.stars}
-                </span>
-              </div>
-
-              <p id="limitation">{feed.message}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  return (
-    <ul>
-      <div id="quiz-group">
-        <h3>GERENCIAR:</h3>
-
-        <div id="content-group">
-          <div id="body">
-            <strong>Retornos</strong>
-
-            <HandleComponents item={4} />
-          </div>
-
-          <div id="tips">
-            <strong>Controles</strong>
-            <span>Não é possível deletar nenhuma mensagem.</span>
-            <span>
-              Ao responder será retirada da lista, mais podera ser requisitada
-              caso necessário. (pelo ID)
-            </span>
-          </div>
-        </div>
-
-        <div id="footer">
+      {/* <div id="footer">
           <button onClick={() => setIsActived(!isActived)} id="btn-default">
             Recarregar
           </button>
-        </div>
-      </div>
-    </ul>
-  );
-};
+        </div> */}
+    </div>
+  </ul>
+);

@@ -70,7 +70,7 @@ const Login = () => {
     <div id="App-login">
       <section className="form-section">
         <header>
-          <h3>Only Admin</h3>
+          <h3>Apenas para administradores</h3>
         </header>
 
         <div id="form-wrapper">
@@ -109,8 +109,8 @@ const Login = () => {
           </form>
         </div>
         <div id="card-account">
-          <h4>New to Genesys?</h4>
-          <a href="/admin/register">create an account</a>
+          <h4>Novo na Wheezy?</h4>
+          <a href="/admin/register">Crie uma conta</a>
         </div>
       </section>
     </div>

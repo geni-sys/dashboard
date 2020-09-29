@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import React, { useState, memo } from "react";
 
 // """IMAGES"""

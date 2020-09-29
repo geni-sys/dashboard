@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useCookies } from "react-cookie";
 import { FiTrash, FiAlertTriangle } from "react-icons/fi";
 import api from "../../../../services/api";
+import formatTimeStamps from "../../../Utils/formatTimeStamps";
 // COMPONENTS
 import "./styles.css";
 
@@ -66,7 +67,7 @@ function Users({ disactiveControle }) {
             <td>{item.name}</td>
             <td>{item.email}</td>
             <td>{item.canny ? "SIM" : "NÃO"}</td>
-            <td>{item.createdAt}</td>
+            <td>{formatTimeStamps(item.createdAt)}</td>
             <td>
               {buttonDelete ? (
                 <button id="exclude" onClick={() => setButtonDelete(false)}>
