@@ -10,7 +10,7 @@ import ChatsElement from "../ChatsElement";
 import { Container, Element } from "./styles";
 
 const ChatsMessages = () => {
-  const [, setFeedbacks] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
   const [elementSelected, setElementSelected] = useState(null);
   const [toUser, setToUser] = useState(null);
   const [messageTitle, setMessageTitle] = useState("");
@@ -49,99 +49,35 @@ const ChatsMessages = () => {
     <Container id="mensagens">
       {!elementSelected && (
         <>
-          <Element
-            onClick={() => SelectElement(1, 2, "nova funcção 1", "elias al3x")}
-          >
-            <div id="ilustration">
-              <FiCpu />
-            </div>
-
-            <div id="infinity">
-              <div>
-                <strong>Nova funcionalidade</strong>
-                <span>
-                  <FiStar />
-                  2345
-                </span>
+          {feedbacks.map((feedback) => (
+            <Element
+              key={feedback.id}
+              onClick={() =>
+                SelectElement(
+                  feedback.id,
+                  feedback.user_id,
+                  feedback.title,
+                  feedback.user.name
+                )
+              }
+            >
+              <div id="ilustration">
+                <FiCpu />
               </div>
 
-              <p id="limitation">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque,
-                ipsa sunt. Autem quasi quaerat amet voluptatum beatae voluptates
-                sed voluptatibus itaque quisquam, mollitia repudiandae dolore
-                dolores
-              </p>
-            </div>
-          </Element>
+              <div id="infinity">
+                <div>
+                  <strong>{feedback.title}</strong>
+                  <span>
+                    <FiStar />
+                    {feedback.stars}
+                  </span>
+                </div>
 
-          <Element onClick={() => SelectElement(1, 2, "nova funcção 2")}>
-            <div id="ilustration">
-              <FiCpu />
-            </div>
-
-            <div id="infinity">
-              <div>
-                <strong>Nova funcionalidade</strong>
-                <span>
-                  <FiStar />
-                  2345
-                </span>
+                <p id="limitation">{feedback.message}</p>
               </div>
-
-              <p id="limitation">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque,
-                ipsa sunt. Autem quasi quaerat amet voluptatum beatae voluptates
-                sed voluptatibus itaque quisquam, mollitia repudiandae dolore
-                dolores
-              </p>
-            </div>
-          </Element>
-
-          <Element onClick={() => SelectElement(1, 2, "nova funcção 3")}>
-            <div id="ilustration">
-              <FiCpu />
-            </div>
-
-            <div id="infinity">
-              <div>
-                <strong>Nova funcionalidade</strong>
-                <span>
-                  <FiStar />
-                  2345
-                </span>
-              </div>
-
-              <p id="limitation">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque,
-                ipsa sunt. Autem quasi quaerat amet voluptatum beatae voluptates
-                sed voluptatibus itaque quisquam, mollitia repudiandae dolore
-                dolores
-              </p>
-            </div>
-          </Element>
-
-          <Element onClick={() => SelectElement(1, 2, "nova funcção 4")}>
-            <div id="ilustration">
-              <FiCpu />
-            </div>
-
-            <div id="infinity">
-              <div>
-                <strong>Nova funcionalidade</strong>
-                <span>
-                  <FiStar />
-                  2345
-                </span>
-              </div>
-
-              <p id="limitation">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque,
-                ipsa sunt. Autem quasi quaerat amet voluptatum beatae voluptates
-                sed voluptatibus itaque quisquam, mollitia repudiandae dolore
-                dolores
-              </p>
-            </div>
-          </Element>
+            </Element>
+          ))}
         </>
       )}
 
