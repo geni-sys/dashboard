@@ -1,9 +1,12 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable camelcase */
 /* eslint-disable quotes */
 import React, { useState, useEffect, useCallback } from "react";
 import * as _ from "lodash";
 import { useCookies } from "react-cookie";
 import { FiEdit2, FiTrash, FiArrowDown } from "react-icons/fi";
 import api from "../../services/api";
+import Miniature from "../Miniature";
 import formatTimeStamps from "../Utils/formatTimeStamps";
 // COMPONENTS SIBLING
 import ChatsMessages from "../ChatsMessages";
@@ -12,12 +15,16 @@ import UserController from "./components/Users";
 // TYLUS
 import "./groups.css";
 
-const Image =
-  "https://avatars0.githubusercontent.com/u/35645590?s=460&u=2b86fc193b30e15abe3ad4df935ee7b7edf4cbd4&v=4";
-
 export const UsersInfo = () => {
+  const [logs, setLogs] = useState([]);
+  const [name] = useState(
+    () => localStorage.getItem("name") || "recarrege a página"
+  );
   const [isActive, setIsActive] = useState(true);
   const [modalIsActive, setModalIsActive] = useState(false);
+
+  const [cookies] = useCookies();
+  const { token, user_id } = cookies;
 
   function handleChangeControle() {
     setIsActive(!isActive);
@@ -26,6 +33,28 @@ export const UsersInfo = () => {
   function handleControl() {
     return <UserController disactiveControle={handleChangeControle} />;
   }
+
+  const handleRequest = useCallback(async () => {
+    try {
+      const response = await api.get(`/admin_logs/${user_id}`, {
+        headers: {
+          Authorization: String(token),
+        },
+      });
+
+      if (response.data) {
+        return setLogs(response.data);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    return null;
+  }, []);
+
+  useEffect(() => {
+    handleRequest();
+  }, []);
 
   return (
     <>
@@ -47,7 +76,7 @@ export const UsersInfo = () => {
             </div>
             <div>
               <p>Mais..</p>
-              <label htmlFor="">55%</label>
+              <label htmlFor="">18%</label>
             </div>
           </div>
 
@@ -56,45 +85,46 @@ export const UsersInfo = () => {
 
         <li className="dev-item">
           <header>
-            <strong>Seus logs gravados</strong>
+            <strong>Seus logs gravados: {name}</strong>
           </header>
 
-          <div className="usr-info">
-            <div id="first">
-              <div id="header">
-                <img src={Image} alt="usr" />
+          {logs.map((log) => (
+            <div className="usr-info" key={log.id}>
+              <div id="first">
+                <div id="header">
+                  <Miniature width="40px" height="40px" />
+                </div>
+                <div id="boody">
+                  <strong>Artigos</strong>
+                  <p>{log.issues_updateds}</p>
+                </div>
               </div>
-              <div id="boody">
-                <strong>Elias alexandre</strong>
-                <p>Eliminou um artigo</p>
+
+              <div id="first">
+                <div id="header">
+                  <Miniature width="40px" height="40px" />
+                </div>
+                <div id="boody">
+                  <strong>Playlists</strong>
+                  <p>{log.lists_updateds}</p>
+                </div>
+              </div>
+
+              <div id="first">
+                <div id="header">
+                  <Miniature width="40px" height="40px" />
+                </div>
+                <div id="boody">
+                  <strong>Edições</strong>
+                  <p>{log.any_updateds}</p>
+                </div>
               </div>
             </div>
-
-            <div id="first">
-              <div id="header">
-                <img src={Image} alt="usr" />
-              </div>
-              <div id="boody">
-                <strong>Elias alexandre</strong>
-                <p>Excluiu uma conta</p>
-              </div>
-            </div>
-
-            <div id="first">
-              <div id="header">
-                <img src={Image} alt="usr" />
-              </div>
-              <div id="boody">
-                <strong>Elias alexandre</strong>
-                <p>Editou um artigo</p>
-              </div>
-            </div>
-          </div>
-
+          ))}
           <div id="footer-u" />
         </li>
       </ul>
-      <button onClick={handleChangeControle} id="usr-list-all">
+      <button type="button" onClick={handleChangeControle} id="usr-list-all">
         Listar usuários da plataforma
       </button>
     </>

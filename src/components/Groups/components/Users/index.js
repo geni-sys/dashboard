@@ -1,12 +1,17 @@
+/* eslint-disable camelcase */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/button-has-type */
+/* eslint-disable quotes */
 import React, { useState, useEffect, useCallback } from "react";
 import { useCookies } from "react-cookie";
+import PropTypes from "prop-types";
 import { FiTrash, FiAlertTriangle } from "react-icons/fi";
 import api from "../../../../services/api";
 import formatTimeStamps from "../../../Utils/formatTimeStamps";
 // COMPONENTS
 import "./styles.css";
 
-function Users({ disactiveControle }) {
+const Users = ({ disactiveControle }) => {
   const [data, setData] = useState([]);
   const [buttonDelete, setButtonDelete] = useState(true);
 
@@ -16,7 +21,7 @@ function Users({ disactiveControle }) {
   const handleRequest = useCallback(async () => {
     try {
       const response = await api
-        .get(`/users`, {
+        .get("/users", {
           headers: {
             Authorization: String(token),
           },
@@ -28,6 +33,7 @@ function Users({ disactiveControle }) {
       console.log(err.message);
       return alert(err.message);
     }
+    return null;
   }, [token]);
   async function handleExclude(id) {
     try {
@@ -45,6 +51,7 @@ function Users({ disactiveControle }) {
       console.log(err.message);
       return alert(err.message);
     }
+    return disactiveControle();
   }
 
   useEffect(() => {
@@ -70,11 +77,16 @@ function Users({ disactiveControle }) {
             <td>{formatTimeStamps(item.createdAt)}</td>
             <td>
               {buttonDelete ? (
-                <button id="exclude" onClick={() => setButtonDelete(false)}>
+                <button
+                  type="button"
+                  id="exclude"
+                  onClick={() => setButtonDelete(false)}
+                >
                   <FiTrash />
                 </button>
               ) : (
                 <button
+                  type="button"
                   onClick={() => {
                     handleExclude(item.id);
                     setButtonDelete(true);
@@ -90,6 +102,10 @@ function Users({ disactiveControle }) {
       </table>
     </div>
   );
-}
+};
+
+Users.propTypes = {
+  disactiveControle: PropTypes.func.isRequired,
+};
 
 export default Users;

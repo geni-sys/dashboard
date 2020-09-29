@@ -1,10 +1,13 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-shadow */
+/* eslint-disable quotes */
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import api from "../../services/api";
 // COMPONENTS
 import { FiArrowDown, FiXOctagon } from "react-icons/fi";
 import ReactLoading from "react-loading";
+import api from "../../services/api";
 // STYLUS | STATIC
 import { Container, Load, Main, Form, Input, Submit, Card } from "./styles";
 import Stars from "../../assets/media/stars.svg";
@@ -22,7 +25,7 @@ const Register = () => {
 
   useEffect(() => {
     if (!cookies.token && !cookies.user_id) {
-      console.log("Usuário sem log " + JSON.stringify(cookies));
+      console.log(`Usuário sem log ${JSON.stringify(cookies)}`);
       return;
     }
 
@@ -40,10 +43,10 @@ const Register = () => {
 
     setIsLoading(1);
 
-    let psw = String(password).trim();
-    let eml = String(email).trim();
-    let nm = String(name).trim();
-    let git = String(github).trim();
+    const psw = String(password).trim();
+    const eml = String(email).trim();
+    const nm = String(name).trim();
+    const git = String(github).trim();
 
     try {
       const response = await api
@@ -61,7 +64,8 @@ const Register = () => {
             alert(error.response.data.error);
             console.log(error.response.status);
             return;
-          } else if (error.request) {
+          }
+          if (error.request) {
             // The request was made but no response was received
             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
             // http.ClientRequest in node.js
@@ -79,17 +83,29 @@ const Register = () => {
         return alert("Erro na requisição");
       }
 
-      const token = response.data.token;
+      const { token } = response.data;
       const user_id = response.data.user.id;
-      const github = response.data.user.github;
-      const completed = response.data.user.completed;
+      const { github } = response.data.user;
+      const { completed } = response.data.user;
+
+      await api.post(
+        `/admin_logs/${String(user_id)}`,
+        {
+          issues_logs: "Iniciou as atividades",
+          lists_logs: "Iniciou as atividades",
+          any_logs: "Iniciou as atividades",
+        },
+        {
+          headers: { Authorization: String(token) },
+        }
+      );
 
       setCookie("token", `Bearer ${token}`.trim());
       setCookie("user_id", String(user_id).trim());
       localStorage.setItem("email", String(email).trim());
       localStorage.setItem("name", String(name).trim());
       localStorage.setItem("questions_status", String(completed));
-      localStorage.setItem("github_avatar", String(github + ".png"));
+      localStorage.setItem("github_avatar", String(`${github}.png`));
 
       setIsLoading(2);
 
@@ -99,6 +115,7 @@ const Register = () => {
       alert(err.message);
       console.log(err.message);
     }
+    return null;
   }
 
   function stateInRun(id) {
