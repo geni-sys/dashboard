@@ -18,7 +18,7 @@ import "./groups.css";
 export const UsersInfo = () => {
   const [logs, setLogs] = useState([]);
   const [name] = useState(
-    () => localStorage.getItem("name") || "recarrege a página"
+    () => localStorage.getItem("name") || "recarrege a página",
   );
   const [isActive, setIsActive] = useState(true);
   const [modalIsActive, setModalIsActive] = useState(false);
@@ -85,7 +85,11 @@ export const UsersInfo = () => {
 
         <li className="dev-item">
           <header>
-            <strong>Seus logs gravados: {name}</strong>
+            <strong>
+              Seus logs gravados:
+              {' '}
+              {name}
+            </strong>
           </header>
 
           {logs.map((log) => (
@@ -161,7 +165,7 @@ export const AlterData = () => {
           headers: {
             Authorization: String(token),
           },
-        }
+        },
       );
 
       if (response) {
@@ -318,6 +322,11 @@ export const Dashboard = () => {
   const [users, setUsers] = useState({});
   const [lists, setLists] = useState({});
   const [feedbacks, setFeedbacks] = useState({});
+  const [registrExcludeds, setRegistrExcludeds] = useState({
+    user_excludeds: 0,
+    playlist_excludeds: 0,
+    issue_excludeds: 0,
+  });
 
   const [cookies] = useCookies();
   const { token } = cookies;
@@ -348,10 +357,17 @@ export const Dashboard = () => {
         },
       });
 
+      const response_registry = await api.get("/dashboard/excludeds", {
+        headers: {
+          Authorization: String(token),
+        },
+      });
+
       setArtigos(response_issue.data);
       setUsers(response_users.data);
       setLists(response_lists.data);
       setFeedbacks(response_feedbacks.data);
+      setRegistrExcludeds(response_registry.data[0]);
     } catch (err) {
       console.log(err.messge);
       alert(err.messge);
@@ -379,7 +395,7 @@ export const Dashboard = () => {
           </div>
           <div>
             <p style={{ color: "var(--notification)" }}>Excluídos</p>
-            <label htmlFor="">2343</label>
+            <label htmlFor="">{registrExcludeds.issue_excludeds}</label>
           </div>
         </div>
         <div id="footer" />
@@ -413,7 +429,7 @@ export const Dashboard = () => {
         <div className="user-info">
           <div>
             <p style={{ color: "var(--notification)" }}>Fecharam a conta |</p>
-            <label htmlFor="">{users.excluded}</label>
+            <label htmlFor="">{registrExcludeds.user_excludeds}</label>
           </div>
           <div>
             <p style={{ color: "green" }}>Destaques</p>
@@ -438,7 +454,7 @@ export const Dashboard = () => {
           </div>
           <div>
             <p style={{ color: "green" }}>Excluídos</p>
-            <label htmlFor="">{lists.excludeds}</label>
+            <label htmlFor="">{registrExcludeds.playlist_excludeds}</label>
           </div>
         </div>
         <div id="footer" />
@@ -467,9 +483,7 @@ export const Playlist = () => {
   }
 
   function filterData(collection, value) {
-    const filtered = _.filter(collection, (item) =>
-      String(item.name).toLowerCase().includes(String(value).toLowerCase())
-    );
+    const filtered = _.filter(collection, (item) => String(item.name).toLowerCase().includes(String(value).toLowerCase()));
 
     if (!(filtered.length === 0)) {
       setData(filtered);
@@ -531,7 +545,7 @@ export const Playlist = () => {
               <tr key={list.id}>
                 <td>
                   <a
-                    href={`http://localhost:3337/playlists?watch=${list.id}`}
+                    href={`http://localhost:3330/playlists?watch=${list.id}`}
                     rel="noreferrer"
                     target="_BLANK"
                   >
