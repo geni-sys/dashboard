@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import api from "../../../../services/api";
+/* eslint-disable no-alert */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable camelcase */
+import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import api from '../../../../services/api';
 
-import "./styles.css";
+import './styles.css';
 
 function AulaControle({ id, disactiveControle }) {
-  const [title, setTitle] = useState("");
-  const [tags, setTags] = useState("");
-  const [body, setBody] = useState(``);
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState('');
+  const [tags, setTags] = useState('');
+  const [body, setBody] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
 
   const [cookies] = useCookies();
   const history = useHistory();
@@ -33,6 +37,8 @@ function AulaControle({ id, disactiveControle }) {
       setBody(response.data.body);
       setEmail(response.data.user.email);
       setName(response.data.user.name);
+
+      return;
     } catch (err) {
       console.log(err.message);
       return alert(err.message);
@@ -40,7 +46,7 @@ function AulaControle({ id, disactiveControle }) {
   }, [token, id]);
   async function handleDelete() {
     try {
-      const response = api
+      const response = await api
         .delete(`/admin/${user_id}/destroy/issue/${id}`, {
           headers: {
             Authorization: String(token),
@@ -48,13 +54,21 @@ function AulaControle({ id, disactiveControle }) {
         })
         .catch((error) => alert(error.message));
 
-      if (response) {
-        alert("ISSUE DELETADA!");
+      if (response.data.message) {
+        alert('ARTIGO DELETADO!');
         disactiveControle();
-        return history.push("/home?tab=4");
-      } else {
-        return alert("Erro deletando a issue");
+
+        await api.put(`/dashboard/excludeds/${user_id}?issue=true`, {}, {
+          headers: {
+            Authorization: String(token),
+          },
+        })
+          .catch((error) => alert(error.message));
+
+        window.location.href = '/home?tab=4';
+        return;
       }
+      return alert('Erro deletando a issue');
     } catch (err) {
       return alert(err.message);
     }
@@ -72,17 +86,16 @@ function AulaControle({ id, disactiveControle }) {
             headers: {
               Authorization: String(token),
             },
-          }
+          },
         )
         .catch((error) => alert(error.message));
 
       if (response) {
-        alert("ISSUE EDITADA!");
+        alert('ISSUE EDITADA!');
         disactiveControle();
-        return history.push("/home?tab=4");
-      } else {
-        return alert("ERRO EDITANDO a issue");
+        return history.push('/home?tab=4');
       }
+      return alert('ERRO EDITANDO a issue');
     } catch (err) {
       return alert(err.message);
     }
@@ -97,7 +110,11 @@ function AulaControle({ id, disactiveControle }) {
       <ul id="edit-father">
         <li id="edit-all">
           <div id="top">
-            <strong># {id}</strong>
+            <strong>
+              #
+              {' '}
+              {id}
+            </strong>
             <strong>{title}</strong>
           </div>
           <div id="edit-aula-user">
@@ -133,7 +150,7 @@ function AulaControle({ id, disactiveControle }) {
                 name="area"
                 id="are"
                 required
-              ></textarea>
+              />
             </div>
           </div>
           <div id="edit-aula-info">
@@ -144,7 +161,7 @@ function AulaControle({ id, disactiveControle }) {
             <button type="submit" onClick={handleSave} className="green">
               Salvar
             </button>
-            <button onClick={handleDelete} className="red">
+            <button type="button" onClick={handleDelete} className="red">
               Excluir
             </button>
           </div>
@@ -153,5 +170,10 @@ function AulaControle({ id, disactiveControle }) {
     </div>
   );
 }
+
+AulaControle.propTypes = {
+  id: PropTypes.number.isRequired,
+  disactiveControle: PropTypes.func.isRequired,
+};
 
 export default AulaControle;
