@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable camelcase */
 /* eslint-disable quotes */
@@ -228,7 +229,7 @@ export const Aulas = () => {
   const [modalIsActive, setModalIsActive] = useState(false);
 
   const [cookies] = useCookies();
-  const { token } = cookies;
+  const { token, user_id } = cookies;
 
   const handleData = useCallback(async () => {
     const response = await api.get("/issues", {
@@ -245,6 +246,35 @@ export const Aulas = () => {
   }
   function handleEdit(id) {
     return <AulasController id={id} disactiveControle={handleChangeControle} />;
+  }
+  async function setIssueAsFeatured(id) {
+    try {
+      const response = await api.put(`/configurate/issue/${id}/destaque`, {
+        destaque: 2,
+      }, {
+        headers: {
+          Authorization: String(token),
+        },
+      })
+        .catch((error) => alert(error.message));
+
+      if (response.data) {
+        await api.put(`/admin_logs/${user_id}`, {
+          issues_logs: "Adicinou um novo Artigo como destaque",
+        }, {
+          headers: {
+            Authorization: String(token),
+          },
+        })
+          .catch((error) => alert(error.message));
+
+        window.location.href = '/home?tab=4';
+      }
+      return;
+    } catch (err) {
+      console.log(err.message);
+      alert(err.message);
+    }
   }
 
   useEffect(() => {
@@ -274,6 +304,7 @@ export const Aulas = () => {
                 <th>Título</th>
                 <th>Recurso</th>
                 <th>Criador</th>
+                <th>Destaque</th>
                 <th>Controle</th>
               </tr>
 
@@ -293,6 +324,9 @@ export const Aulas = () => {
                   </td>
                   <td>
                     <p>{item.user.name}</p>
+                  </td>
+                  <td>
+                    <button disabled={item.featured} onClick={() => setIssueAsFeatured(item.id)} type="button"> Destacar </button>
                   </td>
                   <td>
                     <button
@@ -467,35 +501,65 @@ export const Playlist = () => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
 
+  const [cookies] = useCookies();
+  const { token, user_id } = cookies;
+
   async function handleExclude(id) {
     try {
-      const res = await api.delete(`/playlists/${id}`).catch((error) => {
-        alert(error.message);
-      });
+      const response = await api.delete(`/playlists/${id}`, {
+        headers: {
+          Authorization: String(token),
+        },
+      })
+        .catch((error) => alert(error.message));
 
-      if (res) {
-        alert("DELETADA COM SUCESSO!");
+      if (response.data) {
+        alert('LISTA DELETADA COM SUCESSO!');
+
+        await api.put(`/dashboard/excludeds/${user_id}?list=true`, {}, {
+          headers: {
+            Authorization: String(token),
+          },
+        })
+          .catch((error) => alert(error.message));
+
+        window.location.href = '/home?tab=5';
       }
+      return;
     } catch (err) {
       console.log(err.message);
-      return alert(err.message);
+      alert(err.message);
     }
   }
+  async function setListAsFeatured(id) {
+    try {
+      const response = await api.put(`/configurate/list/${id}/destaque`, {
+        destaque: 2,
+      }, {
+        headers: {
+          Authorization: String(token),
+        },
+      })
+        .catch((error) => alert(error.message));
 
-  function filterData(collection, value) {
-    const filtered = _.filter(collection, (item) => String(item.name).toLowerCase().includes(String(value).toLowerCase()));
+      if (response.data) {
+        await api.put(`/admin_logs/${user_id}`, {
+          lists_logs: "Adicinou uma lista como destaque",
+        }, {
+          headers: {
+            Authorization: String(token),
+          },
+        })
+          .catch((error) => alert(error.message));
 
-    if (!(filtered.length === 0)) {
-      setData(filtered);
+        window.location.href = '/home?tab=5';
+      }
       return;
+    } catch (err) {
+      console.log(err.message);
+      alert(err.message);
     }
-    handleData();
-
-    return filtered;
   }
-
-  const [cookies] = useCookies();
-  const { token } = cookies;
 
   const handleData = useCallback(async () => {
     const response = await api.get("/playlists", {
@@ -506,6 +570,20 @@ export const Playlist = () => {
 
     setData(response.data.lists);
   }, [token]);
+
+  function filterData(collection, value) {
+    const filtered = _.filter(collection, (item) => String(item.name)
+      .toLowerCase()
+      .includes(String(value).toLowerCase()));
+
+    if (!(filtered.length === 0)) {
+      setData(filtered);
+      return;
+    }
+    handleData();
+
+    return filtered;
+  }
 
   useEffect(() => {
     handleData();
@@ -537,7 +615,8 @@ export const Playlist = () => {
             <tr>
               <th>Nome</th>
               <th>Artigos</th>
-              <th>Stars</th>
+              <th>Marcações</th>
+              <th>Destaque</th>
               <th>Excluir</th>
             </tr>
 
@@ -545,7 +624,7 @@ export const Playlist = () => {
               <tr key={list.id}>
                 <td>
                   <a
-                    href={`http://localhost:3330/playlists?watch=${list.id}`}
+                    href={`http://localhost:3337/playlists?watch=${list.id}`}
                     rel="noreferrer"
                     target="_BLANK"
                   >
@@ -559,7 +638,10 @@ export const Playlist = () => {
                   <p>{list.stars}</p>
                 </td>
                 <td>
-                  <button id="edition" onClick={() => handleExclude(list.id)}>
+                  <button disabled={list.destaque} onClick={() => setListAsFeatured(list.id)} type="button"> Destacar </button>
+                </td>
+                <td>
+                  <button type="button" id="edition" onClick={() => handleExclude(list.id)}>
                     <FiTrash width="30" />
                   </button>
                 </td>

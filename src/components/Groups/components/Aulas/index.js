@@ -116,6 +116,23 @@ function AulaControle({ id, disactiveControle }) {
               {id}
             </strong>
             <strong>{title}</strong>
+            <button
+              style={{
+                background: 'var(--white)',
+                display: 'flex',
+                alignItems: 'center',
+                margin: 0,
+                padding: 0,
+                width: '20px',
+                justifyContent: 'center',
+                borderRadius: '5px',
+                border: '1px solid',
+              }}
+              type="button"
+              onClick={() => disactiveControle()}
+            >
+              X
+            </button>
           </div>
           <div id="edit-aula-user">
             <div>
