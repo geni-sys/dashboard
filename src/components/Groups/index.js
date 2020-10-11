@@ -171,7 +171,7 @@ export const AlterData = () => {
 
       if (response) {
         handleRequest();
-        return alert("Usuário rebaixado!");
+        return alert("Usuário alterado!");
       }
     } catch (err) {
       console.log(err);
@@ -195,7 +195,7 @@ export const AlterData = () => {
             <th>Nome</th>
             <th>Indetificação</th>
             <th>Atualizado</th>
-            <th>Downgreed</th>
+            <th>Mudar permissões</th>
           </tr>
 
           {admins.map((adm) => (
@@ -210,7 +210,7 @@ export const AlterData = () => {
                 <p>{formatTimeStamps(adm.updatedAt) || "recente"}</p>
               </td>
               <td>
-                <button onClick={() => handleDemote(adm.id)} id="edition">
+                <button type="button" onClick={() => handleDemote(adm.id)} id="edition">
                   <FiArrowDown width="30" />
                 </button>
               </td>
