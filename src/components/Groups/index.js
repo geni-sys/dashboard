@@ -171,6 +171,18 @@ export const AlterData = () => {
 
       if (response) {
         handleRequest();
+
+        await api.put(`/admin_logs/${user_id}`, {
+          any_logs: "Alterou as permições de um novo usuário",
+        }, {
+          headers: {
+            Authorization: String(token),
+          },
+        })
+          .catch((error) => alert(error.message));
+
+        window.location.href = '/home?tab=3';
+
         return alert("Usuário alterado!");
       }
     } catch (err) {

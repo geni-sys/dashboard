@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/button-has-type */
@@ -53,6 +54,49 @@ const Users = ({ disactiveControle }) => {
     }
     return disactiveControle();
   }
+  async function setUserAsFeatured(id) {
+    try {
+      const response = await api.put(`/configurate/user/${id}/destaque`, {
+        destaque: 2,
+      }, {
+        headers: {
+          Authorization: String(token),
+        },
+      })
+        .catch((error) => alert(error.message));
+
+      if (response.data) {
+        await api.put(`/admin_logs/${user_id}`, {
+          lists_logs: "Marcou um novo usuário como destaque",
+        }, {
+          headers: {
+            Authorization: String(token),
+          },
+        })
+          .catch((error) => alert(error.message));
+
+        await api.post(
+          `/notifications/${user_id}/to/${id}`,
+          {
+            transcription: `(PARABÉNS) Você foi marcado como um usuário destaque. ❤😊❤👏👏`,
+            state: "complete",
+            type: "ourteam",
+          },
+          {
+            headers: {
+              Authorization: String(token),
+            },
+          },
+        );
+
+        window.location.href = '/home?tab=2';
+      }
+      return;
+    } catch (err) {
+      console.log(err.message);
+      alert(err.message);
+    }
+  }
 
   useEffect(() => {
     handleRequest();
@@ -66,6 +110,7 @@ const Users = ({ disactiveControle }) => {
           <th>Email</th>
           <th>Admin?</th>
           <th>Inscrição</th>
+          <th>Destaque</th>
           <th>Apagar</th>
         </tr>
 
@@ -75,6 +120,9 @@ const Users = ({ disactiveControle }) => {
             <td>{item.email}</td>
             <td>{item.canny ? "SIM" : "NÃO"}</td>
             <td>{formatTimeStamps(item.createdAt)}</td>
+            <td>
+              <button disabled={item.destaque} onClick={() => setUserAsFeatured(item.id)} type="button">Destacar</button>
+            </td>
             <td>
               {buttonDelete ? (
                 <button
