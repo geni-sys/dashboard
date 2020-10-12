@@ -100,8 +100,8 @@ export const UsersInfo = () => {
                   <Miniature width="40px" height="40px" />
                 </div>
                 <div id="boody">
-                  <strong>Artigos</strong>
-                  <p>{log.issues_updateds}</p>
+                  <strong>{log.issues_updateds}</strong>
+                  <p>{formatTimeStamps(log.updatedAt) || "recente"}</p>
                 </div>
               </div>
 
@@ -110,8 +110,8 @@ export const UsersInfo = () => {
                   <Miniature width="40px" height="40px" />
                 </div>
                 <div id="boody">
-                  <strong>Playlists</strong>
-                  <p>{log.lists_updateds}</p>
+                  <strong>{log.lists_updateds}</strong>
+                  <p>{formatTimeStamps(log.updatedAt) || "recente"}</p>
                 </div>
               </div>
 
@@ -120,8 +120,8 @@ export const UsersInfo = () => {
                   <Miniature width="40px" height="40px" />
                 </div>
                 <div id="boody">
-                  <strong>Edições</strong>
-                  <p>{log.any_updateds}</p>
+                  <strong>{log.any_updateds}</strong>
+                  <p>{formatTimeStamps(log.updatedAt) || "recente"}</p>
                 </div>
               </div>
             </div>

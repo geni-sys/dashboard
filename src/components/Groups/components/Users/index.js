@@ -67,7 +67,7 @@ const Users = ({ disactiveControle }) => {
 
       if (response.data) {
         await api.put(`/admin_logs/${user_id}`, {
-          lists_logs: "Marcou um novo usuário como destaque",
+          any_logs: "Marcou um novo usuário como destaque",
         }, {
           headers: {
             Authorization: String(token),
