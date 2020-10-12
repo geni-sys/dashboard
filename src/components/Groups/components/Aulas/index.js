@@ -171,8 +171,8 @@ function AulaControle({ id, disactiveControle }) {
             </div>
           </div>
           <div id="edit-aula-info">
-            <span>Stars: 24343</span>
-            <span>Users: 234</span>
+            {/* <span>Stars: 24343</span>
+            <span>Users: 234</span> */}
           </div>
           <div id="comtroller">
             <button type="submit" onClick={handleSave} className="green">

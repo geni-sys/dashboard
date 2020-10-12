@@ -64,6 +64,7 @@ li#edit-all div#edit-aula-body div#transcription textarea#are {
   font-family: "Roboto", Arial, Helvetica, sans-serif;
   resize: vertical;
   width: 100%;
+  min-height: 150px;
   background: #eeeded;
 }
 

@@ -669,7 +669,7 @@ export const Playlist = () => {
 export const Chats = () => (
   <ul>
     <div id="quiz-group">
-      <h3>GERENCIAR:</h3>
+      <h3>GERENCIAR FEEDBACKs:</h3>
 
       <div id="content-group">
         <div id="body">
