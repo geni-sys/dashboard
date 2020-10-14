@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable camelcase */
 /* eslint-disable no-shadow */
 /* eslint-disable quotes */
@@ -9,7 +10,9 @@ import { FiArrowDown, FiXOctagon } from "react-icons/fi";
 import ReactLoading from "react-loading";
 import api from "../../services/api";
 // STYLUS | STATIC
-import { Container, Load, Main, Form, Input, Submit, Card } from "./styles";
+import {
+  Container, Load, Main, Form, Input, Submit, Card,
+} from "./styles";
 import Stars from "../../assets/media/stars.svg";
 import Montains from "../../assets/media/montains.svg";
 
@@ -97,7 +100,7 @@ const Register = () => {
         },
         {
           headers: { Authorization: String(token) },
-        }
+        },
       );
 
       setCookie("token", `Bearer ${token}`.trim());
@@ -109,6 +112,7 @@ const Register = () => {
 
       setIsLoading(2);
 
+      // return alert("USUÁRIO CRIADO");
       return setTimeout(() => history.push("/home"), 1000);
     } catch (err) {
       setIsLoading(0);

@@ -69,15 +69,15 @@ export const UsersInfo = () => {
           <div className="time-info">
             <div>
               <p>30min - 1h</p>
-              <label htmlFor="">27%</label>
+              <label htmlFor="">0%</label>
             </div>
             <div>
               <p>1h - 1h:30</p>
-              <label htmlFor="">55%</label>
+              <label htmlFor="">0%</label>
             </div>
             <div>
               <p>Mais..</p>
-              <label htmlFor="">18%</label>
+              <label htmlFor="">0%</label>
             </div>
           </div>
 

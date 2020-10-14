@@ -1,13 +1,13 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import api from "../../services/api";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import api from '../../services/api';
 
-import "./styles.css";
+import './styles.css';
 
 const Login = () => {
-  const [email, setEmail] = useState(String(""));
-  const [password, setPassword] = useState(String(""));
+  const [email, setEmail] = useState(String(''));
+  const [password, setPassword] = useState(String(''));
 
   const [cookies, setCookie, removeCookie] = useCookies();
   const history = useHistory();
@@ -17,32 +17,30 @@ const Login = () => {
 
     try {
       const response = await api
-        .post("/ok/authenticate", {
+        .post('/ok/authenticate', {
           password,
           email,
         })
-        .catch((err) => {
-          return alert(err.message);
-        });
+        .catch((err) => alert(err.message));
 
       const { token, user } = response.data;
 
       // SE É ADMIN
       if (user.canny) {
-        setCookie("token", `Bearer ${token}`.trim());
-        setCookie("user_id", user.id);
-        localStorage.setItem("name", String(user.name));
-        localStorage.setItem("email", String(user.email));
-        localStorage.setItem("questions_status", String(user.completed));
-        localStorage.setItem("github_avatar", String(user.github + ".png"));
+        setCookie('token', `Bearer ${token}`.trim());
+        setCookie('user_id', user.id);
+        localStorage.setItem('name', String(user.name));
+        localStorage.setItem('email', String(user.email));
+        localStorage.setItem('questions_status', String(user.completed));
+        localStorage.setItem('github_avatar', String(`${user.github}.png`));
 
-        return history.push("/home");
+        return history.push('/home');
       }
 
-      return alert("Apenas administradores podem fazer esse Login!");
+      return alert('Apenas administradores podem fazer esse Login!');
     } catch (err) {
       console.log(err.message);
-      return alert("Erro ao efetuar o login");
+      return alert('Erro ao efetuar o login');
     }
   }
 
@@ -50,15 +48,15 @@ const Login = () => {
     const { token, user_id } = cookies;
 
     if (!token || !user_id) {
-      removeCookie("token");
-      removeCookie("user_id");
-      localStorage.removeItem("name");
-      localStorage.removeItem("email");
-      localStorage.removeItem("questions_status");
-      localStorage.removeItem("github_avatar");
+      removeCookie('token');
+      removeCookie('user_id');
+      localStorage.removeItem('name');
+      localStorage.removeItem('email');
+      localStorage.removeItem('questions_status');
+      localStorage.removeItem('github_avatar');
       // alert("BEM VINDO!");
     } else {
-      return history.push("/home");
+      return history.push('/home');
     }
   }, [cookies, history, removeCookie]);
 
